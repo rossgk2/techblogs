@@ -59,7 +59,7 @@ This is equivalent to
 
 ## Further generalization
 
-Now, assume that in addition to having multiple groups of inputs $\mathbf{x}\_1, ..., \mathbf{x}\_p$, we want to pass these groups of inputs through multiple layers multiple layers $L_1, ..., L\_\ell$. If layer $L_i$ has weight matrix $\mathbf{W}\_i$, then the result of passing $\mathbf{x}\_1, ..., \mathbf{x}\_p$ through $L_\_1, ..., L_\ell$ is the following product of matrices:
+Now, assume that in addition to having multiple groups of inputs $\mathbf{x}\_1, ..., \mathbf{x}\_p$, we want to pass these groups of inputs through multiple layers multiple layers $L_1, ..., L\_\ell$. If layer $L_i$ has weight matrix $\mathbf{W}\_i$, then the result of passing $\mathbf{x}\_1, ..., \mathbf{x}\_p$ through $L\_1, ..., L_\ell$ is the following product of matrices:
 
 ![Ml8](https://blogs.perficient.com/files/ML8-300x30.png)
 
