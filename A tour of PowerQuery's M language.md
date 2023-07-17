@@ -41,7 +41,7 @@ We should also note that one can place the code of the form `x = let ... in ...`
 
 ### `let ... in ...` Vs. `select ... from ...`
 
-In my opinion, the `let ... in ...` syntax doesn't really make much sense. I think the M language would make much more sense if there were no `let` nor `in`And every script simply returned the value of its last line.
+In my opinion, the `let ... in ...` syntax doesn't really make much sense. I think the M language would make much more sense if there were no `let` nor `in` and every script simply returned the value of its last line.
 
 It seems to me that`let ... in ...` is supposed to evoke connotations with SQL's `select ... from ...`. Comparisons between `let ... in ...` and `select ... from ...` quickly break down, though:
 
