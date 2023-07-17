@@ -24,7 +24,7 @@ in
 
 ![Image 20220421103907452](https://blogs.perficient.com/files/image-20220421103907452-1024x277.png)
 
-Interestingly enough, it is not actually necessary for a script to contain the keywords `let` and `inSo` *long as* the only content in the script evaluates to a value. For instance,
+Interestingly enough, it is not actually necessary for a script to contain the keywords `let` and `in` *so long as* the only content in the script evaluates to a value. For instance,
 
 ```
 x = 5
