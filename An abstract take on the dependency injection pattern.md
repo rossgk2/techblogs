@@ -97,7 +97,7 @@ public class Impl extends Intf
 
 public class Cls
 {
-    private intf;
+    private Intf intf;
     public Cls(Intf intf) { this.intf = intf; }
 
     public void method() { intf.helperMethod(); }
