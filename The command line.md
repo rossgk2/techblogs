@@ -52,7 +52,7 @@ We can see these concepts at play in the following bash command:
 curl --request "GET" --include "https://google.com/"
 ```
 
-The `curl` command is the "client for URLs" command. It sends a request of the specified type to the specified URL. In this command,
+The `curl` command is the "client for URLs" command. It sends an HTTP request of the type specified by `request` to the specified URL. In this command,
 
 * `request` is a named argument, and its value is "GET".
   * Specifying that `request` is "GET" tells `curl` that the type of HTTP request it is to send to the URL is a "GET" request, and not a "POST" or any other type of request.
