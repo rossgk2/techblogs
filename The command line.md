@@ -34,9 +34,9 @@ Shells within the same category use similar syntax, and shells in different cate
 
 ## Windows PowerShell
 
-| Shell name | Notes                                                        | Implemented with                      |      |
-| ---------- | ------------------------------------------------------------ | ------------------------------------- | ---- |
-| PowerShell | Though it has some backwards compatibility with CMD, its built-in commands use conventions that differ from the conventions used by CMD's build-in commands. | Mostly C#, some C and C++, some other | .ps1 |
+| Shell name | Notes                                                        | Implemented with                      | File extension of shell scripts |
+| ---------- | ------------------------------------------------------------ | ------------------------------------- | ------------------------------- |
+| PowerShell | Though it has some backwards compatibility with CMD, its built-in commands use conventions that differ from the conventions used by CMD's build-in commands. | Mostly C#, some C and C++, some other | .ps1                            |
 
 # Structure of a shell command
 
@@ -52,13 +52,13 @@ We can see these concepts at play in the following bash command:
 curl --request "GET" --include "https://google.com/"
 ```
 
-The `curl` command is the "client for URLs" command. It sends a request of the specified type\* to the specified URL. In this command,
+The `curl` command is the "client for URLs" command. It sends a request of the specified type to the specified URL. In this command,
 
 * `request` is a named argument, and its value is "GET".
   * Specifying that `request` is "GET" tells `curl` that the type of HTTP request it is to send to the URL is a "GET" request, and not a "POST" or any other type of request.
 * `include` is a named argument that doesn't accept input, i.e., it is a flag.
   * When `include` is present, `curl` prints the HTTP response it receives back from the URL.
-  * Specifying `include` is somewhat like saying that `include` is `true`. If we didn't specify `include`, and executed `curl --request "GET" "https://google.com"`, then we would have effectively set `include` to false.
+  * Specifying `include` is somewhat like saying that `include` is `true`. If we didn't specify `include`, and executed `curl --request "GET" "https://google.com"`, then we would have effectively set `include` to `false`.
 * `"https://google.com"` is the value of an unnamed argument.
   * `curl` interprets the first unnamed argument to be a URL and attempts to visit that URL.
 
@@ -98,38 +98,53 @@ How the program interprets and makes use of the input passed to it (i.e. how it 
 
 ## Parsing conventions
 
-As you would expect, there are popular conventions for how programs parse their input. The Unix style is the most popular, and continues to grow more popular- commands in other shells have increasingly added more and more support for Unix-like syntax. This is fortunate, as the Unix syntax seems to be most intuitive.
+As you would expect, there are popular conventions for how programs parse their input. The intuitive Unix style is the most popular, and continues to grow more popular- CMD and PowerShell have increasingly added more and more support for Unix-like syntax.
 
 ### Unix style (most popular)
 
-The essentials of Unix shell command are as follows:
+The essentials of a Unix-style shell command are as follows:
 
 * `--` is used to denote named arguments; both named arguments that accept input, and named arguments that don't accept input ("flags")
-* `-` is used as "shorthand" for named arguments
-  * e.g. `ls --directory` is the same as `ls -d`
+  *  e.g. `ls --time-style=long-iso`, `ls --time-style long-iso`, and `ls --time-style "long-iso"` are all the same
+  * e.g.  `ls --directory` 
+
+* `-` is used as a single-letter short-form for named arguments
+  * e.g. `ls -d` is the same as `ls --directory`.
 * Strings following a single dash `-` are interpreted to be the combination of shorthand named arguments
   * e.g. `ls -da` is the same as `ls -d -a`, which is the same as `ls --directory --all`
 
 * Arguments can be assigned values via space separation (e.g. `program --arg value` and `program -a v`) or with an `=` sign (e.g. `program --arg=value` and `program -a=v`)
 
-#### Conventions
-
-* There are different conventions for where unnamed arguments- also called "positional arguments" are placed.
-  * It is technically possible for a command to successfully parse unnamed arguments that are "mixed in" with named arguments, but allowing this makes commands unreadable. So, most commands enforce that all unnamed arguments either go before all named arguments or after all named arguments.
+* Positional arguments are typically required to either be all before or all after the named arguments\*. 
   * Some commands require the user to denote the end of all named arguments with the string ` -- `.
+* Some Unix commands support "sub-options" that are only available when another argument takes on a particular value.
+  * This is in fact the principle behind "subcommands".
 
-* Some Unix commands support "sub-options" that are only available when another argument takes on a particular value. For example, .... This is in fact the principle behind "subcommands".
+
+\* It is technically possible for a command to successfully parse unnamed arguments that are "mixed in" with named arguments, but allowing this makes commands unreadable. So, most commands enforce that all unnamed arguments either go before all named arguments or after all named arguments.
+
+\* A positional argument `parg` is said to be a *subcommand* if
+
+* it is the first positional argument, and the form of the remaining command (the portion of the command not including `parg`) depends on `parg`
+* the preceding positional argument is a subcommand, and the form of the remaining command (the portion of the command not including the preceding positional arguments nor `parg` ) depends on `parg`
 
 ### CMD
 
-* `/` is used to denote named arguments; both named arguments that accept inputs, and named arguments that don't ("flags")
-* shorthand args?
+* In some CMD commands, `/` is used for long-form named arguments, and short-form named arguments are not permitted (using the same symbol for long-form and short-form named arguments is ambiguous).
+* For other CMD commands, `/` is used for short-form named arguments, and long-form arguments are not permitted. 
+* CMD commands increasingly support Unix-style use of `--` and `-`.
 
 ### PowerShell style
 
-* `-` for both single-letter arguments and string arguments (e.g. `java` on both Windows and Unix)
+* `-` is used for both long-form and short-form named arguments. 
+* -letter arguments and string arguments (e.g. `java` on both Windows and Unix)
 
-* 
+## Environment variables and `PATH`
+
+* Environment variables are case-insensitive on Windows, but case-sensitive in Unix.
+* Windows includes `.` in PATH. Unix does not.
+  * From a security perspective, the Unix approach of not including `.` in PATH is best because, if someone tricked you into putting a malicious executable called `ls` in your current directory, and then had you run `ls`, you'd run their malicious `ls` instead of the system `ls`.
+* In Unix shells, have to run programs with code like `./program`. Simply `program` works in CMD.
 
 # Tutorial: navigating file systems with bash
 
@@ -159,21 +174,7 @@ The value `*/`  , which is passed in as an unnamed argument, causes the `ls` com
 cd
 ```
 
-
-
-## PATH and ./
-
-On Windows, the current directory `.` is included in PATH.
-
-On Unix, the current directory `.` is not included in PATH.
-
 # bash on Windows
 
 * Windows Subsystem for Linux
 * Git Bash
-
-# Etc
-
-* Environment variables are case-insensitive on Windows, but case-sensitive in Unix.
-* Windows includes `.` in PATH. Unix does not.
-  * From a security perspective, the Unix approach of not including `.` in PATH is best because, if someone tricked you into putting a malicious executable called `ls` in your current directory, and then had you run `ls`, you'd run their malicious `ls` instead of the system `ls`.
