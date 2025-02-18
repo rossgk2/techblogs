@@ -52,7 +52,7 @@ We can see these concepts at play in the following bash command:
 curl --request "GET" --include "https://google.com/"
 ```
 
-The `curl` command is the "client for URLs" command. It sends an HTTP request of the type specified by `request` to the specified URL. In this command,
+The `curl` command is the "client for URLs" command. It sends a request of the specified type to the specified URL. In this command,
 
 * `request` is a named argument, and its value is "GET".
   * Specifying that `request` is "GET" tells `curl` that the type of HTTP request it is to send to the URL is a "GET" request, and not a "POST" or any other type of request.
@@ -64,7 +64,9 @@ The `curl` command is the "client for URLs" command. It sends an HTTP request of
 
 ## Inside a shell command
 
-Every shell comes with a set of standard commands it can run. The `curl` command is a good example of a standard bash command, for instance. Most bash commands, including the standard ones, are written in C. The C code underlying `curl` looks something like this:
+Every shell comes with a set of standard commands it can run. In bash, `cd` and `ls` are examples of standard commands.
+
+Most bash commands, including the standard ones, are written in C. So, the C code underlying `curl` looks something like this:
 
 ```c
 /* curl.c */
@@ -108,7 +110,7 @@ The essentials of a Unix-style shell command are as follows:
 
 * `-` is used as a single-letter short-form for named arguments
   * e.g. `ls -d` is the same as `ls --directory`.
-* Strings following a single dash `-` are interpreted to be the combination of shorthand named arguments
+* Strings following a single dash `-` are interpreted to be the combination of short-form named arguments
   * e.g. `ls -da` is the same as `ls -d -a`, which is the same as `ls --directory --all`
 
 * Arguments can be assigned values via space separation (e.g. `program --arg value` and `program -a v`) or with an `=` sign (e.g. `program --arg=value` and `program -a=v`)
@@ -126,21 +128,29 @@ The essentials of a Unix-style shell command are as follows:
 * it is the first positional argument, and the form of the remaining command (the portion of the command not including `parg`) depends on `parg`
 * the preceding positional argument is a subcommand, and the form of the remaining command (the portion of the command not including the preceding positional arguments nor `parg` ) depends on `parg`
 
-### CMD
+### CMD and PowerShell
 
-* In some CMD commands, `/` is used for long-form named arguments, and short-form named arguments are not permitted (using the same symbol for long-form and short-form named arguments is ambiguous).
-* In other CMD commands, `/` is used for short-form named arguments, and long-form arguments are not permitted. 
+* In CMD, `/` is used to denote named arguments.
+* In PowerShell, `-` is used to denote named arguments.
+* Some CMD and PowerShell commands support both long-form named arguments and short-form named arguments, but combining short-form named arguments in the Unix style is not supported*.
+* Other CMD and PowerShell commands support short-form named arguments* and also Unix-style combination of short-form named arguments, but not long-form named arguments\*.
+
 * CMD commands increasingly support Unix-style use of `--` and `-`.
 
-### PowerShell style
+\* If short-form arguments can be combined as in the Unix style, then using the same symbol for long-form and short-form named arguments is ambiguous. One can have either (1) Unix-style short form argument combination or (2) use the same symbol for long-form and short-form named arguments, but it's impossible to have both without introducing ambiguity.
 
-* `-` is used for both long-form and short-form named arguments. 
-* -letter arguments and string arguments (e.g. `java` on both Windows and Unix)
+### Real world inconsistency
+
+Remember that any command in any shell can define any syntax it wants. It is very possible to encounter commands on a Unix system that conform to non-Unix standards. For example, if Java is installed, then the `java` executable uses `-` for named arguments in a PowerShell sort of style.  
 
 ## Environment variables and `PATH`
 
-* Environment variables are case-insensitive on Windows, but case-sensitive in Unix.
-* Windows includes `.` in PATH. Unix does not.
+* An *environment variable* is a variable that is known to the entire OS.
+* Environment variable identifiers are case-sensitive on Unix and case-insensitive on Windows.
+* In both Unix and Windows, the value of the `PATH` environment variable is a string that consists of paths to files separated by a delimiter. On Unix, the delimiter is the colon :. On Windows, the delimiter is the semicolon ;.
+* Normally, to execute a program in a shell, one has to specify the full path to that program. For example, one would run something like  `C:\Program Files\Java\jdk-1.8.0\bin\javac` to run the Java 1.8 compiler, and something like `C:\Program Files\Java\jdk-1.8.0\bin\javac` to run the Java 1.8 executable.
+* Executables whose paths appear in `PATH` do not need to be specified explicitly like this, though, as the shell will search all paths listed in PATH before it attempts to execute any command. So, if we add `C:\Program Files\Java\jdk-1.8.0\bin\`  to `PATH`, then we can simply run `javac` to run the compiler and `java` to run the executable.
+* Windows includes the current directory `.` in `PATH`. Unix does not.
   * From a security perspective, the Unix approach of not including `.` in PATH is best because, if someone tricked you into putting a malicious executable called `ls` in your current directory, and then had you run `ls`, you'd run their malicious `ls` instead of the system `ls`.
 * In Unix shells, have to run programs with code like `./program`. Simply `program` works in CMD.
 
@@ -172,7 +182,7 @@ The value `*/`  , which is passed in as an unnamed argument, causes the `ls` com
 cd
 ```
 
-# bash on Windows
+## bash on Windows
 
 * Windows Subsystem for Linux
 * Git Bash
