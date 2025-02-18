@@ -64,9 +64,7 @@ The `curl` command is the "client for URLs" command. It sends a request of the s
 
 ## Inside a shell command
 
-Every shell comes with a set of standard commands it can run. In bash, `cd` and `ls` are examples of standard commands.
-
-Most bash commands, including the standard ones, are written in C. So, the C code underlying `curl` looks something like this:
+Every shell comes with a set of standard commands it can run. The `curl` command is a good example of a standard bash command, for instance. Most bash commands, including the standard ones, are written in C. The C code underlying `curl` looks something like this:
 
 ```c
 /* curl.c */
