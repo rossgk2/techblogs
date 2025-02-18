@@ -129,7 +129,7 @@ The essentials of a Unix-style shell command are as follows:
 ### CMD
 
 * In some CMD commands, `/` is used for long-form named arguments, and short-form named arguments are not permitted (using the same symbol for long-form and short-form named arguments is ambiguous).
-* For other CMD commands, `/` is used for short-form named arguments, and long-form arguments are not permitted. 
+* In other CMD commands, `/` is used for short-form named arguments, and long-form arguments are not permitted. 
 * CMD commands increasingly support Unix-style use of `--` and `-`.
 
 ### PowerShell style
