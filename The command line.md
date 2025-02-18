@@ -113,7 +113,7 @@ The essentials of a Unix-style shell command are as follows:
 * Strings following a single dash `-` are interpreted to be the combination of short-form named arguments
   * e.g. `ls -da` is the same as `ls -d -a`, which is the same as `ls --directory --all`
 
-* Arguments can be assigned values via space separation (e.g. `program --arg value` and `program -a v`) or with an `=` sign (e.g. `program --arg=value` and `program -a=v`)
+* Arguments can be assigned values via space separation (e.g. `program --arg value` and `program -a value`) or with an `=` sign (e.g. `program --arg=value` and `program -a=value`)
 
 * Positional arguments are typically required to either be all before or all after the named arguments\*. 
   * Some commands require the user to denote the end of all named arguments with the string ` -- `.
