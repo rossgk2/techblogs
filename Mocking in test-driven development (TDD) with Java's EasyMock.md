@@ -1,4 +1,4 @@
-In this article, we'll explore the test-driven development practice of *mocking*. No, this won't entail calling your developer teammates silly names! Specifically, we'll use Java's EasyMock package to get a sense of the functionality that a typical mocking library provides.
+In this article, we'll explore the test-driven development practice of *mocking*. We'll use Java's EasyMock package to get a sense of the functionality that a typical mocking library provides.
 
 Before we learn what mocking is, we first must consider the general scenario in which mocking is useful.
 
