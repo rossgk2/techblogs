@@ -4,11 +4,11 @@ The first successful mass-market personal computer was the Apple II, and was rel
 
 Before the time of graphical user interfaces, computer users would write and execute text commands in what is known as a *command line interface*, *terminal*, or *shell*.
 
-The command line is still alive and well today (for programmers, at least) because basic command line knowledge is necessary to compile and test programs in essential programming languages like C, C++, C#, Java, and Python\*.
+The command line is still alive and well today (for programmers, at least) because basic command line knowledge is necessary to compile and test programs in essential programming languages like C, C++, C#, Java, and Python[^4].
 
 This article gives an overview of the shells in use today.
 
-\* Yes, it's true that integrated development environments (IDEs) abstract command line details away and thus make it possible to compile and run programs by clicking user-friendly icons- but in order to interact with the IDE settings in an informed way, you have to know what's going on behind the scenes! 
+[^4]: Yes, it's true that integrated development environments (IDEs) abstract command line details away and thus make it possible to compile and run programs by clicking user-friendly icons- but in order to interact with the IDE settings in an informed way, you have to know what's going on behind the scenes! 
 
 # Shells by OS
 
@@ -115,26 +115,26 @@ The essentials of a Unix-style shell command are as follows:
 
 * Arguments can be assigned values via space separation (e.g. `program --arg "value"` and `program -a "value"`) or with an `=` sign (e.g. `program --arg="value"` and `program -a="value"`)
 
-* Positional arguments are typically required to either be all before or all after the named arguments[^1]. 
+* Positional arguments are typically required to either be all before or all after the named arguments[^4]. 
   * Some commands require the user to denote the end of all named arguments with the string ` -- `.
 * Some Unix commands support "sub-options" that are only available when another argument takes on a particular value.
-  * This is in fact the principle behind "subcommands"[^2].
+  * This is in fact the principle behind "subcommands"[^4].
 
 
-[^1]: It is technically possible for a command to successfully parse unnamed arguments that are "mixed in" with named arguments, but allowing this makes commands unreadable. So, most commands enforce that all unnamed arguments either go before all named arguments or after all named arguments.
+[^4]: It is technically possible for a command to successfully parse unnamed arguments that are "mixed in" with named arguments, but allowing this makes commands unreadable. So, most commands enforce that all unnamed arguments either go before all named arguments or after all named arguments.
 
-[^2]: A positional argument `parg` is said to be a *subcommand* if (1) it is the first positional argument, and the form of the remaining command (the portion of the command not including `parg`) depends on `parg` or (2) the preceding positional argument is a subcommand, and the form of the remaining command (the portion of the command not including the preceding positional arguments nor `parg` ) depends on `parg`.
+[^4]: A positional argument `parg` is said to be a *subcommand* if (1) it is the first positional argument, and the form of the remaining command (the portion of the command not including `parg`) depends on `parg` or (2) the preceding positional argument is a subcommand, and the form of the remaining command (the portion of the command not including the preceding positional arguments nor `parg` ) depends on `parg`.
 
 ### CMD and PowerShell
 
 * In CMD, `/` is used to denote named arguments.
 * In PowerShell, `-` is used to denote named arguments.
-* Some CMD and PowerShell commands support both long-form named arguments and short-form named arguments. Combining short-form named arguments in the Unix style is not supported for such commands[^3].
-* Other CMD and PowerShell commands support short-form named arguments and also Unix-style combination of short-form named arguments, but not long-form named arguments[^3].
+* Some CMD and PowerShell commands support both long-form named arguments and short-form named arguments. Combining short-form named arguments in the Unix style is not supported for such commands[^4].
+* Other CMD and PowerShell commands support short-form named arguments and also Unix-style combination of short-form named arguments, but not long-form named arguments[^4].
 
 * CMD commands increasingly support Unix-style use of `--` and `-`.
 
-[^3]: If short-form arguments can be combined as in the Unix style, then using the same symbol for long-form and short-form named arguments is ambiguous. One can have either (1) Unix-style short form argument combination or (2) use the same symbol for long-form and short-form named arguments, but it's impossible to have both without introducing ambiguity.
+[^4]: If short-form arguments can be combined as in the Unix style, then using the same symbol for long-form and short-form named arguments is ambiguous. One can have either (1) Unix-style short form argument combination or (2) use the same symbol for long-form and short-form named arguments, but it's impossible to have both without introducing ambiguity.
 
 ### Real world inconsistency
 
