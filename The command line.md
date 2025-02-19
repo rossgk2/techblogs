@@ -148,10 +148,11 @@ Remember that any command in any shell can define any syntax it wants. It is ver
 * Normally, to execute a program in a shell, one has to specify the full path to that program. For example, one would run something like  `usr/java/jdk-1.8.0/bin/javac` to run the Java 1.8 compiler, and something like `usr/java/jdk-1.8.0/bin/java` to run the Java 1.8 executable.
 * Executables whose paths appear in `PATH` do not need to be specified explicitly like this, though, as the shell will search all paths listed in PATH before it attempts to execute any command. So, if we add `usr/java/jdk-1.8.0/bin/`  to `PATH`, then we can simply run `javac` to run the compiler and `java` to run the executable.
 * Windows includes the current directory `.` in `PATH`. Unix does not.
-  * The Unix approach of not including `.` in PATH is best because it ensures that other programs can rely on `ls` to always mean `/usr/bin/ls`, as one would expect, instead of `./ls`.
-* In Unix shells, have to run programs with code like `./program`. Simply `program` works in CMD.
+  * The Unix approach of not including `.` in PATH is best because it ensures that other programs can easily invoke standard programs, and not unintentionally invoke user-defined programs in the working directory happening to share a name with a standard program. In other words, if a user wants to invoke a program in the working directory that's called `program`, they must execute `./program`.
 
 # Tutorial: navigating file systems with bash
+
+**TO-DO: finish this section**
 
 The following is a quick tutorial for navigating the file system of your computer with a bash shell. 
 
@@ -180,6 +181,8 @@ cd
 ```
 
 ## bash on Windows
+
+**TO-DO: finish this section**
 
 * Windows Subsystem for Linux
 * Git Bash
