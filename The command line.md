@@ -98,7 +98,7 @@ How the program interprets and makes use of the input passed to it (i.e. how it 
 
 ## Parsing conventions
 
-As you would expect, there are popular conventions for how programs parse their input. The intuitive Unix style is the most popular. It continues to grow more popular: CMD and PowerShell have increasingly added more and more support for Unix-like syntax.
+As you would expect, there are popular conventions for how programs parse their input. The intuitive Unix style is the most popular, and continues to grow moreso, as more and more CMD and PowerShell commands are coming to support Unix-like syntax.
 
 ### Unix style (most popular)
 
@@ -126,8 +126,8 @@ The essentials of a Unix-style shell command are as follows:
 
 ### CMD style and PowerShell style
 
-* In CMD-style command, `/` is used to denote named arguments.
-* In PowerShell-style command, `-` is used to denote named arguments.
+* In CMD-style shell command, `/` is used to denote named arguments.
+* In PowerShell-style shell command, `-` is used to denote named arguments.
 * Some CMD-style and PowerShell-style commands support both long-form named arguments and short-form named arguments. Combining short-form named arguments in the Unix style is not supported for such commands[^4].
 * Other CMD-style and PowerShell-style commands support short-form named arguments and also Unix-style combination of short-form named arguments, but not long-form named arguments[^4].
 
