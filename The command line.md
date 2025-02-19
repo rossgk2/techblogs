@@ -2,7 +2,7 @@
 
 The first successful mass-market personal computer was the Apple II, and was released in 1975. It would be nine years until the first computer to provide the user a graphical user interface, the Apple Macintosh, was released in 1984. (And it was four more years until Microsoft released its first widely successful GUI-based OS, Windows 3.0.)
 
-Before the time of graphical user interfaces, computer users would write and execute text commands in what is known as a *command line interface*, *terminal*, or *shell*.
+Before the time of graphical user interfaces, computer users would write and execute text commands in what is known as a *command line interface*, *command line*, *terminal*, or *shell*.
 
 The command line is still alive and well today (for programmers, at least) because basic command line knowledge is necessary to compile and test programs in essential programming languages like C, C++, C#, Java, and Python[^1].
 
