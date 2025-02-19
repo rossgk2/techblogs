@@ -157,6 +157,19 @@ The following table gives the file extensions associated with scripts for the sh
 
 Notice that "bash script" and "batch file" sound very similar, but are different things. A bash script is a script for the bash shell, and a batch file is a script for CMD.
 
+## Paths
+
+* On Unix, `/` is the root directory of the system. In PowerShell, `/` is the root directory of the current drive (e.g. `C:\` or `D:\`). In CMD, there is no shorthand for the root directory of the current drive.
+* In Unix and PowerShell,  `~` is the "home" directory. CMD has no equivalent.
+* In all shells, `.` is the working directory and  `..` is the directory above the working directory.
+
+## Quotation behavior
+
+[TO-DO]
+
+* `cd fldr` is equivalent to `cd "fldr"`
+* `"` vs. `'` in the various shells
+
 ## Environment variables and `PATH`
 
 In CMD and PowerShell, an executable program `program` in the working directory is run by executing
@@ -194,7 +207,7 @@ Even if you are on a Windows machine, there are still ways to run a bash termina
 
 [^5]: Virtual machines can run in two ways. Either (1) there is an additional abstraction layer inserted between the hardware layer and the OS layer, called the *hypervisor*, and the host OS and VM OS both run alongside each other on top of the hypervisor, or (2) the host OS sets up a *container* inside of which the VM OS runs. The WSL2 kernel uses the hypervisor approach and runs alongside Windows OS.
 
-## Tutorial
+## bash tutorial
 
 First, run the following command. 
 
@@ -218,6 +231,16 @@ The value `*/`  , which is passed in as an unnamed argument, causes the `ls` com
 
 Thus, the above command prints the folders in the working directory.
 
+To change your working directory so that it is one of these folders (suppose the folder of interest is named `fldr`), type
+
 ```
-cd <path>
+cd "fldr"
 ```
+
+If your working directory happened to be somewhere else, you could still navigate to `fldr` by using its full path. If the full path of `fldr` were `/home/Bob/Desktop/fldr`, then you could have done
+
+```
+cd "/home/Bob/Desktop/fldr"
+```
+
+These command would work no matter what your working directory is.
