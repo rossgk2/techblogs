@@ -109,7 +109,7 @@ The essentials of a Unix-style shell command are as follows:
   * e.g.  `ls --directory` 
 
 * `-` is used as a single-letter short-form for named arguments
-  * e.g. `ls -d` is the same as `ls --directory`.
+  * e.g. `ls -d` is the same as `ls --directory`
 * Strings following a single dash `-` are interpreted to be the combination of short-form named arguments
   * e.g. `ls -da` is the same as `ls -d -a`, which is the same as `ls --directory --all`
 
