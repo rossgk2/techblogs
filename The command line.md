@@ -245,4 +245,4 @@ If your working directory happened to be somewhere else, you could still navigat
 cd "/home/Bob/Desktop/fldr"
 ```
 
-These command would work no matter what your working directory is.
+This command would work no matter what your working directory is.
