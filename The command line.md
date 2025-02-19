@@ -173,10 +173,12 @@ This "list" command prints out all of the files in the working directory. If you
 ls --directory */
 ```
 
-The value `*/`  , which is passed in as an unnamed argument, causes the `ls` command to only search for files whose path is of the form `*/`, i.e., files whose paths end in a slash /. The `--directory` flag causes the `ls` command
+The value `*/`  , which is passed in as an unnamed argument, causes the `ls` command to only search for files whose path is of the form `*/`, i.e., files whose paths end in a slash /. The `--directory` flag causes the `ls` command to only search for files that are only at the level of the working directory, and prevents recursive search into those files when they happen to be folders. 
+
+Thus, the above command prints the folders in the working directory.
 
 ```
-cd
+cd <path>
 ```
 
 ## bash on Windows
