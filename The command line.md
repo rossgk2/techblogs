@@ -137,7 +137,9 @@ The essentials of a Unix-style shell command are as follows:
 
 ### Real world inconsistency
 
-Remember that any command in any shell can define any syntax it wants. It is very possible to encounter commands on a Unix system that conform to non-Unix standards. For example, if Java is installed, then the `java` executable uses `-` for named arguments in a PowerShell sort of style; one types `java -version` (not `java --version`) for example, to print out the current Java version.
+Remember that any command in any shell can define any syntax it wants. It is very possible to encounter commands on a Unix system that conform to non-Unix standards.
+
+A good example is the Java executable. When Java is installed, its executable uses `-` for named arguments in a PowerShell sort of style; even in a Unix shell, one types `java -version` instead of `java --version`, to print out the current Java version.
 
 # Additional topics
 
