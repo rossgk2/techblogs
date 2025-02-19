@@ -129,12 +129,12 @@ The essentials of a Unix-style shell command are as follows:
 
 * In CMD, `/` is used to denote named arguments.
 * In PowerShell, `-` is used to denote named arguments.
-* Some CMD and PowerShell commands support both long-form named arguments and short-form named arguments. Combining short-form named arguments in the Unix style is not supported for such commands[^1].
-* Other CMD and PowerShell commands support short-form named arguments and also Unix-style combination of short-form named arguments, but not long-form named arguments[^1].
+* Some CMD and PowerShell commands support both long-form named arguments and short-form named arguments. Combining short-form named arguments in the Unix style is not supported for such commands[^3].
+* Other CMD and PowerShell commands support short-form named arguments and also Unix-style combination of short-form named arguments, but not long-form named arguments[^3].
 
 * CMD commands increasingly support Unix-style use of `--` and `-`.
 
-[^1]: If short-form arguments can be combined as in the Unix style, then using the same symbol for long-form and short-form named arguments is ambiguous. One can have either (1) Unix-style short form argument combination or (2) use the same symbol for long-form and short-form named arguments, but it's impossible to have both without introducing ambiguity.
+[^3]: If short-form arguments can be combined as in the Unix style, then using the same symbol for long-form and short-form named arguments is ambiguous. One can have either (1) Unix-style short form argument combination or (2) use the same symbol for long-form and short-form named arguments, but it's impossible to have both without introducing ambiguity.
 
 ### Real world inconsistency
 
