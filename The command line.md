@@ -145,10 +145,10 @@ Remember that any command in any shell can define any syntax it wants. It is ver
 * An *environment variable* is a variable that is known to the entire OS.
 * Environment variable identifiers are case-sensitive on Unix and case-insensitive on Windows.
 * In both Unix and Windows, the value of the `PATH` environment variable is a string that consists of paths to files separated by a delimiter. On Unix, the delimiter is the colon :. On Windows, the delimiter is the semicolon ;.
-* Normally, to execute a program in a shell, one has to specify the full path to that program. For example, one would run something like  `C:\Program Files\Java\jdk-1.8.0\bin\javac` to run the Java 1.8 compiler, and something like `C:\Program Files\Java\jdk-1.8.0\bin\javac` to run the Java 1.8 executable.
-* Executables whose paths appear in `PATH` do not need to be specified explicitly like this, though, as the shell will search all paths listed in PATH before it attempts to execute any command. So, if we add `C:\Program Files\Java\jdk-1.8.0\bin\`  to `PATH`, then we can simply run `javac` to run the compiler and `java` to run the executable.
+* Normally, to execute a program in a shell, one has to specify the full path to that program. For example, one would run something like  `usr/java/jdk-1.8.0/bin/javac` to run the Java 1.8 compiler, and something like `usr/java/jdk-1.8.0/bin/java` to run the Java 1.8 executable.
+* Executables whose paths appear in `PATH` do not need to be specified explicitly like this, though, as the shell will search all paths listed in PATH before it attempts to execute any command. So, if we add `usr/java/jdk-1.8.0/bin/`  to `PATH`, then we can simply run `javac` to run the compiler and `java` to run the executable.
 * Windows includes the current directory `.` in `PATH`. Unix does not.
-  * From a security perspective, the Unix approach of not including `.` in PATH is best because, if someone tricked you into putting a malicious executable called `ls` in your current directory, and then had you run `ls`, you'd run their malicious `ls` instead of the system `ls`.
+  * The Unix approach of not including `.` in PATH is best because it ensures that other programs can rely on `ls` to always mean `/usr/bin/ls`, as one would expect, instead of `./ls`.
 * In Unix shells, have to run programs with code like `./program`. Simply `program` works in CMD.
 
 # Tutorial: navigating file systems with bash
