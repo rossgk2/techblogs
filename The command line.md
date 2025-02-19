@@ -22,23 +22,23 @@ Shells within the same category use similar syntax, and shells in different cate
 
 ## Unix (MacOS/Linux)
 
-| Shell name                  | Notes                                        | Implemented with | File extension of shell scripts |
-| --------------------------- | -------------------------------------------- | ---------------- | ------------------------------- |
-| sh ("Bourne shell")         | Written by Stephen Bourne at Bell Labs       | C                | No extension or .sh             |
-| bash ("Bourne again shell") | Successor to sh and most popular shell today | Mostly C         | No extension, .sh, or .bash     |
-| zsh ("Z shell")             | Default shell in newer MacOS versions        | C                | No extension or .zsh            |
+| Shell name                  | Notes                                        | Implemented with |
+| --------------------------- | -------------------------------------------- | ---------------- |
+| sh ("Bourne shell")         | Written by Stephen Bourne at Bell Labs       | C                |
+| bash ("Bourne again shell") | Successor to sh and most popular shell today | Mostly C         |
+| zsh ("Z shell")             | Default shell in newer MacOS versions        | C                |
 
 ## Windows CMD
 
-| Shell name | Notes                                                        | Implemented with | File extension of shell scripts                            |
-| ---------- | ------------------------------------------------------------ | ---------------- | ---------------------------------------------------------- |
-| CMD        | Default Windows shell having some backwards compatibility with MS-DOS, which as the interface provided by Windows in the 1980s. | C                | .bat ("batch file") or .cmd (essentially the same as .bat) |
+| Shell name | Notes                                                        | Implemented with |
+| ---------- | ------------------------------------------------------------ | ---------------- |
+| CMD        | Default Windows shell having some backwards compatibility with MS-DOS, which as the interface provided by Windows in the 1980s. | C                |
 
 ## Windows PowerShell
 
-| Shell name | Notes                                                        | Implemented with                      | File extension of shell scripts |
-| ---------- | ------------------------------------------------------------ | ------------------------------------- | ------------------------------- |
-| PowerShell | Though it has some backwards compatibility with CMD, its built-in commands use conventions that differ from the conventions used by CMD's build-in commands. | Mostly C#, some C and C++, some other | .ps1                            |
+| Shell name | Notes                                                        | Implemented with                      |
+| ---------- | ------------------------------------------------------------ | ------------------------------------- |
+| PowerShell | Though it has some backwards compatibility with CMD, its built-in commands use conventions that differ from the conventions used by CMD's build-in commands. | Mostly C#, some C and C++, some other |
 
 # Structure of a shell command
 
@@ -106,7 +106,7 @@ The essentials of a Unix-style shell command are as follows:
 
 * `--` is used to denote named arguments; both named arguments that accept input, and named arguments that don't accept input ("flags")
   *  e.g. `ls --time-style "long-iso"`
-  * e.g.  `ls --directory` 
+  *  e.g.  `ls --directory` 
 
 * `-` is used as a single-letter short-form for named arguments
   * e.g. `ls -d` is the same as `ls --directory`
@@ -124,22 +124,54 @@ The essentials of a Unix-style shell command are as follows:
 
 [^3]: A positional argument `parg` is said to be a *subcommand* if (1) it is the first positional argument, and the form of the remaining command (the portion of the command not including `parg`) depends on `parg` or (2) the preceding positional argument is a subcommand, and the form of the remaining command (the portion of the command not including the preceding positional arguments nor `parg` ) depends on `parg`.
 
-### CMD and PowerShell
+### CMD style and PowerShell style
 
-* In CMD, `/` is used to denote named arguments.
-* In PowerShell, `-` is used to denote named arguments.
-* Some CMD and PowerShell commands support both long-form named arguments and short-form named arguments. Combining short-form named arguments in the Unix style is not supported for such commands[^4].
-* Other CMD and PowerShell commands support short-form named arguments and also Unix-style combination of short-form named arguments, but not long-form named arguments[^4].
+* In CMD-style command, `/` is used to denote named arguments.
+* In PowerShell-style command, `-` is used to denote named arguments.
+* Some CMD-style and PowerShell-style commands support both long-form named arguments and short-form named arguments. Combining short-form named arguments in the Unix style is not supported for such commands[^4].
+* Other CMD-style and PowerShell-style commands support short-form named arguments and also Unix-style combination of short-form named arguments, but not long-form named arguments[^4].
 
-* CMD commands increasingly support Unix-style use of `--` and `-`.
+* Not all CMD commands are CMD-style, and not all PowerShell commands are PowerShell-style! Both CMD and PowerShell increasingly support Unix-style commands.
 
 [^4]: If short-form arguments can be combined as in the Unix style, then using the same symbol for long-form and short-form named arguments is ambiguous. One can have either (1) Unix-style short form argument combination or (2) use the same symbol for long-form and short-form named arguments, but it's impossible to have both without introducing ambiguity.
 
 ### Real world inconsistency
 
-Remember that any command in any shell can define any syntax it wants. It is very possible to encounter commands on a Unix system that conform to non-Unix standards. For example, if Java is installed, then the `java` executable uses `-` for named arguments in a PowerShell sort of style.  
+Remember that any command in any shell can define any syntax it wants. It is very possible to encounter commands on a Unix system that conform to non-Unix standards. For example, if Java is installed, then the `java` executable uses `-` for named arguments in a PowerShell sort of style; one types `java -version` (not `java --version`) for example, to print out the current Java version.
+
+# Additional topics
+
+## Shell scripts
+
+Other than being necessary for compiling and testing programs in essential programming languages like C, C++, C#, Java, and Python, knowing command line interface syntax comes in handy when one wants to save a sequence of commands in command line syntax as a runnable *script*.
+
+The following table gives the file extensions associated with scripts for the shells we've discussed.
+
+| Shell name | File extension of shell scripts                            |
+| ---------- | ---------------------------------------------------------- |
+| sh         | No extension or .sh                                        |
+| bash       | No extension, .sh, or .bash                                |
+| zsh        | No extension or .zsh                                       |
+| CMD        | .bat ("batch file") or .cmd (essentially the same as .bat) |
+| PowerShell | .ps1                                                       |
+
+Notice that "bash script" and "batch file" sound very similar, but are different things. A bash script is a script for the bash shell, and a batch file is a script for CMD.
 
 ## Environment variables and `PATH`
+
+In CMD and PowerShell, an executable program `program` in the working directory is run by executing
+
+```
+program
+```
+
+In Unix, one must instead run
+
+```
+./program
+```
+
+The reasons behind this have to do with what are called *environment variables*:
 
 * An *environment variable* is a variable that is known to the entire OS.
 * Environment variable identifiers are case-sensitive on Unix and case-insensitive on Windows.
@@ -151,9 +183,18 @@ Remember that any command in any shell can define any syntax it wants. It is ver
 
 # Tutorial: navigating file systems with bash
 
-**TO-DO: finish this section**
-
 The following is a quick tutorial for navigating the file system of your computer with a bash shell. 
+
+## bash on Windows
+
+Even if you are on a Windows machine, there are still ways to run a bash terminal.
+
+* Git bash is a "clone" of bash that comes when you install [Git](https://git-scm.com/downloads), the version-control software, and is implemented by translating bash commands into Windows commands.
+* [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install) is a more comprehensive emulation of a Unix-based bash shell that runs on an actual Linux kernel[^5].
+
+[^5]: Virtual machines can run in two ways. Either (1) there is an additional abstraction layer inserted between the hardware layer and the OS layer, called the *hypervisor*, and the host OS and VM OS both run alongside each other on top of the hypervisor, or (2) the host OS sets up a *container* inside of which the VM OS runs. The WSL2 kernel uses the hypervisor approach and runs alongside Windows OS.
+
+## Tutorial
 
 First, run the following command. 
 
@@ -180,10 +221,3 @@ Thus, the above command prints the folders in the working directory.
 ```
 cd <path>
 ```
-
-## bash on Windows
-
-**TO-DO: finish this section**
-
-* Windows Subsystem for Linux
-* Git Bash
