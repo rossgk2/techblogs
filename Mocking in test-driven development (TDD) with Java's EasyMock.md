@@ -19,7 +19,7 @@ public class Cls
 }
 ```
 
-Since `method()` calls `helperMethod()`, a method that relies on an unpredictable external resource, we will need to imitate (or *mock* `helperMethod()`) in order to achieve our goal. Instead of actually calling `helperMethod()` within `method()`, we will make an educated guess as to what `helperMethod()`'s output should be for various inputs.
+Since `method()` calls `helperMethod()`, a method that relies on an unpredictable external resource, we will need to imitate, or *mock*, `helperMethod()` in order to achieve our goal. Instead of actually calling `helperMethod()` within `method()`, we will make an educated guess as to what `helperMethod()`'s output should be for various inputs.
 
 To prepare for imitating `helperMethod()` in this way, we will replace the call to `helperMethod()` with a call to an interface method.
 
