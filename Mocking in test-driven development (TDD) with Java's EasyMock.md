@@ -1,8 +1,6 @@
-In this article, we'll explore the test-driven development practice of *mocking*. We'll use Java's EasyMock package to get a sense of the functionality that a typical mocking library provides.
+In this article, we'll explore the test-driven development practice of *mocking*.
 
-Before we learn what mocking is, we first must consider the general scenario in which mocking is useful.
-
-Consider a class `Cls` with a method `method()` that relies upon a method `helperMethod()`, where `helperMethod()` queries some external resource.
+Consider a class `Cls` with a method `method()` that relies upon a method `helperMethod()`, where `helperMethod()` queries some external resource, and suppose that our *goal* is to test whether `method()` works as intended.
 
 ```java
 public class Cls
@@ -21,9 +19,9 @@ public class Cls
 }
 ```
 
-Suppose that our **goal** is to test whether `method()` works. Since `method()` calls `helperMethod()`, a method that relies on an unpredictable external resource, we will need to imitate or *mock* `helperMethod()` in order to achieve our goal. That is, instead of actually calling `helperMethod()` within `method()`, we will make an educated guess as to what `helperMethod()`'s output should be for various inputs.
+Since `method()` calls `helperMethod()`, a method that relies on an unpredictable external resource, we will need to imitate- that is, we'll need to *mock* `helperMethod()`- in order to achieve our goal. Instead of actually calling `helperMethod()` within `method()`, we will make an educated guess as to what `helperMethod()`'s output should be for various inputs.
 
-In order to mock `helperMethod()` in this way, we will replace the call to `helperMethod()` with a call to an interface method.
+To prepare for imitating `helperMethod()` in this way, we will replace the call to `helperMethod()` with a call to an interface method.
 
 ```java
 public interface HelperI { Object helperMethod(Object args); }
@@ -41,13 +39,15 @@ public class Cls
 }
 ```
 
-We have replaced the call to `helperMethod()` with a call to `helperI.helperMethod()`.
+Specifically, the above code replaces the call to `helperMethod()` with a call to `helperI.helperMethod()`.
 
-Given the above setup, we can use now use `EasyMock` to provide an implementation of `helperI.helperMethod()` , and then use `JUnit` to test `method()` . We assume the necessary `static import` statements for JUnit and EasyMock are used.
+Now, we can use a library such as `EasyMock` to provide a good "best guess" implementation of the interface `HelperI` and, most importantly, its method `helperMethod()`.
 
-Here is that implementation:
+Here's an implementation that uses `EasyMock` and `JUnit` to do exactly this.
 
 ```java
+/* We omit the necessary "static import" statements for the EasyMock and JUnit libraries to reduce clutter. */
+
 public class Tester
 {
     private HelperI helperI;
