@@ -79,8 +79,8 @@ The "data plane" aspect of the network layer concerns the labeling of packets wi
   - (To networks). Networks that are subnetworks of an ISP's network are allocated a "subsubnet mask" of the ISP's subnet mask.
   - (To hosts). A host's IP address is either
   	- Set in a configuration file.
-  	- Obtained dynamically from a server via Dynamic Host Configuration Protocol (DHCP). In DHCP, messages are sent back and forth between the host and the *DHCP server* associated with the host's network's router to facilitate the requesting and allocating of an IP address.
-  		- [Q: how are messages sent and recieved if IP addresses haven't been established yet? A: broadcasting is used. Q: How does the DHCP server ensure the one accepting an address is the one requesting it?]
+  	- Obtained dynamically from a server via Dynamic Host Configuration Protocol (DHCP). In DHCP, messages are sent back and forth between the host and the *DHCP server* associated with the host's network's router to facilitate the requesting and allocating of an IP address.  
+  		- Q: How are messages sent and recieved if IP addresses haven't been established yet? A: Broadcasting is used. Q: But then how does the DHCP server ensure the client accepting an address is the one requesting it? A: Each client is required to send their MAC addresses when sending a request to the DHCP server and when accepting an offer from the DHCP server. The DHCP server can therefore compare the MAC address recieved in the request to the one receieved along with the acceptance of the offer.
 
 ## Network - control plane
 
@@ -124,4 +124,5 @@ In the more modern approach of logically centralized control, a remote computer 
 | ------------------ | ------------------------------------------------------------ |
 | Backbone           | Fiber-optic cables and refrigerator-sized routers            |
 | Last-mile          | Copper phone lines - Digital Subscriber Line<br />Copper lines - G.Fast<br />fiber-optic cables |
+
 | LAN                | Ethernet, Wi-Fi                                              |
