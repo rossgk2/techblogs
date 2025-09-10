@@ -64,6 +64,20 @@ The `curl` command is the "client for URLs" command. It sends a request of the s
 * `"https://google.com"` is the value of an unnamed argument.
   * `curl` interprets the first unnamed argument to be a URL and attempts to visit that URL.
 
+## Inside a shell command
+
+With shell commands, understanding what is convention and what is formal syntax that must be obeyed can be confusing. Let me elucidate this, at least for the bash shell.
+
+*When a bash command is executed, the bash shell passes the result of splitting the command text by spaces-not-enclosed-between-quotes to the program*. This is the reality that can't be escaped. But everything else, like using `--` for named arguments or having positional arguments come after named arguments is convention.
+
+For example, if a user were to execute
+
+```bash
+curl --request "GET" --include "https://google.com/"
+```
+
+then the array `["curl", "--request", "GET", "https://google.com/"]` would be passed to the program underlying `curl`. Exactly how this program interprets and makes use of this informtation is for the program author to decide. We know from above how `curl` is expected to behave, but any number of crazy things could be done.
+
 ## Parsing conventions
 
 As you would expect, there are popular conventions for how programs parse their input. The intuitive Unix style is the most popular, and continues to grow moreso, as more and more CMD and PowerShell commands are coming to support Unix-like syntax.
@@ -108,19 +122,6 @@ The essentials of a Unix-style shell command are as follows:
 Remember that any command in any shell can define any syntax it wants. It is very possible to encounter commands on a Unix system that conform to non-Unix standards.
 
 A good example is the Java executable. When Java is installed, its executable uses `-` for named arguments in a PowerShell sort of style; even in a Unix shell, one types `java -version` instead of `java --version`, to print out the current Java version.
-
-## What is convention, and what is not?
-
-With shell commands, understanding what is convention and what is formal syntax that must be obeyed can be confusing. Let me elucidate this, at least for the bash shell.
-
-*When a bash command is executed, the bash shell passes the result of splitting the command text by spaces-not-enclosed-between-quotes to the program*. This is the reality that can't be escaped. But everything else, like using `--` to denote long form named arguments, `-` to denote short form named arguments, having positional arguments come after named arguments, etc., is convention.
-
-For example, if a user were to execute
-
-```bash
-curl --request "GET" --include "https://google.com/"
-```
-then the array `["curl", "--request", "GET", "https://google.com/"]` would be passed to the program underlying `curl`. Exactly how this program interprets and makes use of this informtation is for the program author to decide. We know from above how `curl` is expected to behave, but any number of crazy things could be done.
 
 # Additional topics
 
@@ -227,6 +228,7 @@ cd "/home/Bob/Desktop/fldr"
 ```
 
 This command would work no matter what your working directory is.
+
 
 
 
