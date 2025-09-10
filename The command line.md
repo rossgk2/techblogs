@@ -46,7 +46,7 @@ All shell commands generally have ways of accepting the following kinds of input
 
 * named arguments that accept input
 * named arguments that don't accept input ("flags")
-* unnamed arguments ("positional arguments")
+* unnamed arguments that accept input ("positional arguments")
 
 We can see these concepts at play in the following bash command:
 
@@ -246,5 +246,6 @@ cd "/home/Bob/Desktop/fldr"
 ```
 
 This command would work no matter what your working directory is.
+
 
 
