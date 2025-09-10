@@ -76,7 +76,7 @@ int main(int argc, char* argv[])
 }
 ```
 
-(Note: `char* argv[]` denotes an array of `char*` values named `argv`. A  `char*` is by definition a pointer to a `char` value. And a pointer to a 	`char` value is essentially a string. Thus `char* argv[]` denotes an array of strings.)
+(Note: `char* argv[]` denotes an array of `char*` values. A  `char*` is by definition a pointer to a `char` value. And a pointer to a 	`char` value is essentially a string. Thus `char* argv[]` denotes an array of strings.)
 
 When a user executes the code
 
@@ -246,6 +246,7 @@ cd "/home/Bob/Desktop/fldr"
 ```
 
 This command would work no matter what your working directory is.
+
 
 
 
