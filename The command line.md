@@ -84,7 +84,7 @@ When a user executes the code
 curl --request "GET" --include "https://google.com/"
 ```
 
-the bash shell passes the result of splitting the command text by spaces-not-enclosed-by-quotes as the value for `argv` and the length of this array as `argc`. So, we would have
+the bash shell passes the result of splitting the command text by spaces-not-enclosed-by-quotes as the value for `argv` (the "argument vector") and the length of this array as `argc` (the "argument count"). So, we would have
 
 ```
 argv[0] == "curl"
@@ -246,6 +246,7 @@ cd "/home/Bob/Desktop/fldr"
 ```
 
 This command would work no matter what your working directory is.
+
 
 
 
