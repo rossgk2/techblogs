@@ -32,8 +32,8 @@ Shells within the same category use similar syntax, and shells in different cate
 
 | Shell name | Notes                                                        | Implemented with |
 | ---------- | ------------------------------------------------------------ | ---------------- |
-| MS-DOS     | "Microsoft Disk Operating System" command line interface from the '80 and '90s | Assembly and C   |
-| CMD        | Default Windows shell having some backwards compatibility with MS-DOS, which was the command line interface provided by Windows in the 1980s. | C                |
+| MS-DOS     | "Microsoft Disk Operating System" command line interface from the 1980s and 1990s | Assembly and C   |
+| CMD        | Default Windows shell having some backwards compatibility with MS-DOS | C                |
 
 ## Windows PowerShell
 
@@ -229,6 +229,7 @@ cd "/home/Bob/Desktop/fldr"
 ```
 
 This command would work no matter what your working directory is.
+
 
 
 
