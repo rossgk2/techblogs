@@ -28,7 +28,7 @@ Shells within the same category use similar syntax, and shells in different cate
 | bash ("Bourne again shell") | Successor to sh and most popular shell today | Mostly C         |
 | zsh ("Z shell")             | Default shell in newer MacOS versions        | C                |
 
-## Windows CMD
+## Windows pre-PowerShell shells
 
 | Shell name | Notes                                                        | Implemented with |
 | ---------- | ------------------------------------------------------------ | ---------------- |
@@ -246,4 +246,5 @@ cd "/home/Bob/Desktop/fldr"
 ```
 
 This command would work no matter what your working directory is.
+
 
