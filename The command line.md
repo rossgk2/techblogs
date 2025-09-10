@@ -75,7 +75,7 @@ For example, if a user were to execute
 ```bash
 curl --request "GET" --include "https://google.com/"
 ```
-then the array `["curl", "--request", "GET", "https://google.com/"]` would be passed to the program underlying `curl`. Exactly this program interprets and makes use of this informtation is for the program author to decide. We know from above how `curl` is expected to behave, but any number of crazy things could be done.
+then the array `["curl", "--request", "GET", "https://google.com/"]` would be passed to the program underlying `curl`. Exactly how this program interprets and makes use of this informtation is for the program author to decide. We know from above how `curl` is expected to behave, but any number of crazy things could be done.
 
 ## Parsing conventions
 
@@ -227,6 +227,7 @@ cd "/home/Bob/Desktop/fldr"
 ```
 
 This command would work no matter what your working directory is.
+
 
 
 
