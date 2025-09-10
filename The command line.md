@@ -39,7 +39,7 @@ Shells within the same category use similar syntax, and shells in different cate
 
 | Shell name | Notes                                                        | Implemented with                      |
 | ---------- | ------------------------------------------------------------ | ------------------------------------- |
-| PowerShell | Though it has some backwards compatibility with CMD, its built-in commands use conventions that differ from the conventions used by CMD's build-in commands. | Mostly C#, some C and C++, some other |
+| PowerShell | Provides aliases for common CMD commands | Mostly C#, some C and C++, some other |
 
 # Structure of a shell command
 
@@ -229,6 +229,7 @@ cd "/home/Bob/Desktop/fldr"
 ```
 
 This command would work no matter what your working directory is.
+
 
 
 
