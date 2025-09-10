@@ -69,7 +69,7 @@ The `curl` command is the "client for URLs" command. It sends a request of the s
 
 With shell commands, understanding what is convention and what is formal syntax that must be obeyed can be confusing. Let me elucidate this, at least for the bash shell. 
 
-*When a bash command is executed, the bash shell passes the result of splitting the command text by spaces-not-enclosed-between-quotes, and then removing outer quotes from each element of the split, to the program*. This is the reality that can't be escaped. But everything else, like using `--` for named arguments or having positional arguments come after named arguments is convention.
+*When a bash command is executed, the bash shell passes the result of splitting the command text by spaces-not-enclosed-between-quotes, and then removing outer quotes from each element of the split, to the program*. This is the reality that can't be escaped. But everything else, like using `--` for named arguments or having positional arguments come after named arguments, is convention.
 
 For example, if a user were to execute
 
@@ -229,6 +229,7 @@ cd "/home/Bob/Desktop/fldr"
 ```
 
 This command would work no matter what your working directory is.
+
 
 
 
