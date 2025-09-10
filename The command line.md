@@ -66,35 +66,16 @@ The `curl` command is the "client for URLs" command. It sends a request of the s
 
 ## Inside a shell command
 
-Every shell comes with a set of standard commands it can run. Most bash commands, including the standard ones such as `curl`, are written in C. The C code underlying `curl` is just a typical C program:
+With shell commands, understanding what is convention and what is formal syntax that must be obeyed can be confusing. Let me elucidate this, at least for the bash shell.
 
-```c
-/* curl.c */
-int main(int argc, char* argv[])
-{
-	/* ... */
-}
-```
+*When a bash command is executed, the bash shell passes the result of splitting the command text by spaces-not-enclosed-between-quotes to the program*. This is the reality that can't be escaped. But everything else, like using `--` to denote long form named arguments, `-` to denote short form named arguments, having positional arguments come after named arguments, etc., is convention.
 
-(Note: `char* argv[]` denotes an array of `char*` values. A  `char*` is by definition a pointer to a `char` value. And a pointer to a 	`char` value is essentially a string. Thus `char* argv[]` denotes an array of strings.)
-
-When a user executes the code
+For example, if a user were to execute
 
 ```bash
 curl --request "GET" --include "https://google.com/"
 ```
-
-the bash shell passes the result of splitting the command text by spaces-not-enclosed-by-quotes as the value for `argv` (the "argument vector") and the length of this array as `argc` (the "argument count"). So, we would have
-
-```
-argv[0] == "curl"
-argv[1] == "--request"
-argv[2] == "GET"
-argv[3] == "https://google.com/"
-argc == 4
-```
-
-How the program interprets and makes use of the input passed to it (i.e. how it makes use of `argv`) is for the program author to decide. We know from above how `curl` is expected to behave, but any number of crazy things could be done.
+then the array `["curl", "--request", "GET", "https://google.com/"]` would be passed to the program underlying `curl`. Exactly this program interprets and makes use of this informtation is for the program author to decide. We know from above how `curl` is expected to behave, but any number of crazy things could be done.
 
 ## Parsing conventions
 
@@ -246,6 +227,7 @@ cd "/home/Bob/Desktop/fldr"
 ```
 
 This command would work no matter what your working directory is.
+
 
 
 
