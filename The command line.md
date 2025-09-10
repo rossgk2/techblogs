@@ -66,9 +66,9 @@ The `curl` command is the "client for URLs" command. It sends a request of the s
 
 ## Inside a shell command
 
-With shell commands, understanding what is convention and what is formal syntax that must be obeyed can be confusing. Let me elucidate this, at least for the bash shell.
+With shell commands, understanding what is convention and what is formal syntax that must be obeyed can be confusing. Let me elucidate this, at least for the bash shell. 
 
-*When a bash command is executed, the bash shell passes the result of splitting the command text by spaces-not-enclosed-between-quotes to the program*. This is the reality that can't be escaped. But everything else, like using `--` for named arguments or having positional arguments come after named arguments is convention.
+*When a bash command is executed, the bash shell passes the result of splitting the command text by spaces-not-enclosed-between-quotes, and then removing outer quotes from each element of the split, to the program*. This is the reality that can't be escaped. But everything else, like using `--` for named arguments or having positional arguments come after named arguments is convention.
 
 For example, if a user were to execute
 
@@ -76,7 +76,7 @@ For example, if a user were to execute
 curl --request "GET" --include "https://google.com/"
 ```
 
-then the array `["curl", "--request", "GET", "https://google.com/"]` would be passed to the program underlying `curl`. Exactly how this program interprets and makes use of this informtation is for the program author to decide. We know from above how `curl` is expected to behave, but any number of crazy things could be done.
+then the array `["curl", "--request", "GET", "https://google.com/"]` would be passed to the program underlying `curl`. (Notice that since outer quotes are stripped, `"GET"` is included in this array, not `\"GET\"`.) Exactly how this program interprets and makes use of this informtation is for the program author to decide. We know from above how `curl` is expected to behave, but any number of crazy things could be done.
 
 ## Parsing conventions
 
@@ -228,6 +228,7 @@ cd "/home/Bob/Desktop/fldr"
 ```
 
 This command would work no matter what your working directory is.
+
 
 
 
