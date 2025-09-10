@@ -151,7 +151,7 @@ Notice that "bash script" and "batch file" sound very similar, but are different
 
 [TO-DO]
 
-* `cd fldr` is equivalent to `cd "fldr"`
+* Since outer quotes are stripped, `cd fldr` is equivalent to `cd "fldr"`
 * `"` vs. `'` in the various shells
 
 ## Environment variables and `PATH`
@@ -228,6 +228,7 @@ cd "/home/Bob/Desktop/fldr"
 ```
 
 This command would work no matter what your working directory is.
+
 
 
 
