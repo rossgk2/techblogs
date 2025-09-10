@@ -111,12 +111,11 @@ The essentials of a Unix-style shell command are as follows:
 
 * In CMD-style shell command, `/` is used to denote named arguments.
 * In PowerShell-style shell command, `-` is used to denote named arguments.
-* Some CMD-style and PowerShell-style commands support both long-form named arguments and short-form named arguments. Combining short-form named arguments in the Unix style is not supported for such commands[^4].
-* Other CMD-style and PowerShell-style commands support short-form named arguments and also Unix-style combination of short-form named arguments, but not long-form named arguments[^4].
+* Some CMD-style and PowerShell-style commands either (1) use the same token (e.g. `/` or `-`) to indicate long-form named arguments and short-form named arguments or (2) support short-form named arguments and Unix-style combination of short-form named arguments. For commands of type (1), combining short-form named arguments in the Unix style is not supported; for commands of type (2), long-form named arguments are not supported[^4]. This complexity seems avoidable to me. Just use different tokens for indicating long-form and short-form arguments, like in Unix.
 
 * Not all CMD commands are CMD-style, and not all PowerShell commands are PowerShell-style! Both CMD and PowerShell increasingly support Unix-style commands.
 
-[^4]: If short-form arguments can be combined as in the Unix style, then using the same symbol for long-form and short-form named arguments is ambiguous. One can have either (1) Unix-style short form argument combination or (2) use the same symbol for long-form and short-form named arguments, but it's impossible to have both without introducing ambiguity.
+[^4]: One can have either (a) Unix-style short form argument combination or (b) use the same symbol for long-form and short-form named arguments, but it's impossible to have both without introducing ambiguity.
 
 ### Real world inconsistency
 
@@ -229,6 +228,7 @@ cd "/home/Bob/Desktop/fldr"
 ```
 
 This command would work no matter what your working directory is.
+
 
 
 
