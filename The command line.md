@@ -66,7 +66,7 @@ The `curl` command is the "client for URLs" command. It sends a request of the s
 
 ## Inside a shell command
 
-Every shell comes with a set of standard commands it can run. Most bash commands, including the standard ones such as `curl`, are written in C. The C code underlying `curl` looks something like this:
+Every shell comes with a set of standard commands it can run. Most bash commands, including the standard ones such as `curl`, are written in C. The C code underlying `curl` is just a typical C program:
 
 ```c
 /* curl.c */
@@ -246,6 +246,7 @@ cd "/home/Bob/Desktop/fldr"
 ```
 
 This command would work no matter what your working directory is.
+
 
 
 
