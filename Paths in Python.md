@@ -8,7 +8,9 @@ Before Python 3.4, paths were primarily handled as `string`s with the `os.path` 
 
 ## `pathlib`: `PurePath` and `Path`
 
-In Python 3.4, the `pathlib` standard module was introduced. It defines the `PurePath` and `Path` classes, and overloads the operator `/` so that it can be used to join paths together. * `PurePath`s are objects wrapping path strings that don't come with methods for filesystem access. Platform-specific path conventions are also represented as predefined `PurePath` instances. * `Path` is a subclass of `PurePath` with additional methods for filesystem access.
+In Python 3.4, the `pathlib` standard module was introduced. It defines the `PurePath` and `Path` classes, and overloads the operator `/` so that it can be used to join paths together.
+* `PurePath`s are objects wrapping path strings that don't come with methods for filesystem access. Platform-specific path conventions are also represented as predefined `PurePath` instances.
+* `Path` is a subclass of `PurePath` with additional methods for filesystem access.
 
 ## The `os.PathLike` protocol
 
