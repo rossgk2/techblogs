@@ -98,7 +98,7 @@ The essentials of a Unix-style shell command are as follows:
 
 * Arguments can be assigned values via space separation (e.g. `program --arg "value"` and `program -a "value"`) or with an `=` sign (e.g. `program --arg="value"` and `program -a="value"`). When `=` is used, there cannot be any spaces adjacent to `=`.
 
-* In GNU-Linux style commands, positional arguments can be mixed in-between named arguments. The practical implication of this is that positional arguments can either go before all named arguments or after all named arguments. In POSIX-Linux style commands, all positional arguments are required to come before all named arguments. 
+* In GNU-Linux style commands, positional arguments can be mixed in-between named arguments. The practical implication of this is that in such commands, positional arguments can either go before all named arguments or after all named arguments. In POSIX-Linux style commands, all positional arguments are required to come before all named arguments. 
   * Some commands require the user to denote the end of all named arguments with the string ` -- `.
 * Some Unix commands support "sub-options" that are only available when another argument takes on a particular value.
   * This is in fact the principle behind "subcommands"[^3].
@@ -226,6 +226,7 @@ cd "/home/Bob/Desktop/fldr"
 ```
 
 This command would work no matter what your working directory is.
+
 
 
 
