@@ -98,12 +98,10 @@ The essentials of a Unix-style shell command are as follows:
 
 * Arguments can be assigned values via space separation (e.g. `program --arg "value"` and `program -a "value"`) or with an `=` sign (e.g. `program --arg="value"` and `program -a="value"`). When `=` is used, there cannot be any spaces adjacent to `=`.
 
-* Positional arguments are typically required to either be all before or all after the named arguments[^2]. 
+* In GNU-Linux style commands, positional arguments can be mixed in-between named arguments. The practical implication of this is that positional arguments can either go before all named arguments or after all named arguments. In POSIX-Linux style commands, all positional arguments are required to come before all named arguments. 
   * Some commands require the user to denote the end of all named arguments with the string ` -- `.
 * Some Unix commands support "sub-options" that are only available when another argument takes on a particular value.
   * This is in fact the principle behind "subcommands"[^3].
-
-[^2]: It is technically possible for a command to successfully parse unnamed arguments that are "mixed in" with named arguments, but allowing this makes commands hard to read. So, most commands enforce that all unnamed arguments either go before all named arguments or after all named arguments.
 
 [^3]: A positional argument `parg` is said to be a *subcommand* if (1) it is the first positional argument, and the form of the remaining command (the portion of the command not including `parg`) depends on `parg` or (2) the preceding positional argument is a subcommand, and the form of the remaining command (the portion of the command not including the preceding positional arguments nor `parg` ) depends on `parg`.
 
@@ -228,6 +226,7 @@ cd "/home/Bob/Desktop/fldr"
 ```
 
 This command would work no matter what your working directory is.
+
 
 
 
