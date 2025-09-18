@@ -4,7 +4,7 @@ As a result of its evolution over time, Python has a couple different paradigms 
 
 ## Path strings
 
-Before Python 3.4, paths were primarily handled as `string`s with the `os.path` standard module. This provided platform agnostic path manipulation.
+Before Python 3.4, paths were primarily handled as `string`s with the `os.path` standard module. This provided platform-agnostic path manipulation.
 
 ## `pathlib`: `PurePath` and `Path`
 
