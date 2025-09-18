@@ -1,6 +1,6 @@
 # Paths in Python
 
-As a result of its evolution over time, Python has a couple different paradigms for working with file paths.
+Python has accumlated a couple different paradigms for working with file paths as it's evolved over time.
 
 ## Path strings
 
