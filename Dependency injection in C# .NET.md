@@ -97,7 +97,7 @@ services.AddSingleton(serviceType);
 
 You can probably surmise that these two methods add a `ServiceDescriptor` of lifetime `Singleton` that has the specified `serviceType` and `implementationType` to the `IServiceCollection`. 
 
-There are also versions of the above methods for which certain combinations of the parameters are held fixed:
+Since the arguments of the above methods are types, one could say it is more proper to specify those arguments as formal type parameters. There are versions of the above methods that cater to this preference:
 
 ```c#
 AddSingleton<TService,TImplementation>()
