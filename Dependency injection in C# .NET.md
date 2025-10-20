@@ -63,7 +63,7 @@ Some of the above may be confusing, so here are some clarifying notes:
 
 So far, we know how to represent services (dependencies) as `ServiceDescriptor`s. We'll now learn how to create a managing container and how to register our services with said container.
 
-An instance of type [`IServiceCollection`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection?view=dotnet-plat-ext-6.0) is what will represent our managing container. From its interface definition, we can see that `IServiceCollection` a collection of `ServiceDescriptor`s. (So, `IServiceCollection` is interpreted as "`I{ServiceCollection}`", which means "interface to a collection of services", not "`{IService}Collection`", which would mean "collection of interfaces to services"!).
+An instance of type [`IServiceCollection`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection?view=dotnet-plat-ext-6.0) is what will represent our managing container. From its interface definition, we can see that `IServiceCollection` is an interface to a collection of `ServiceDescriptor`s. (So, `IServiceCollection` is interpreted as "`I{ServiceCollection}`", which means "interface to a collection of services", not "`{IService}Collection`", which would mean "collection of interfaces to services"!).
 
 ```c#
 using Microsoft.Extensions.DependencyInjection;
