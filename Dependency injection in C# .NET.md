@@ -150,7 +150,7 @@ A *non-nullable* type is a type for which compiler errors are thrown when a vari
 
 According to the [Microsoft documentation](https://docs.microsoft.com/en-us/dotnet/csharp/nullable-references#:~:text=Prior to C%23 8.0%2C all,NullReferenceException), all reference types were nullable prior to C# 8.0. Nowadays (i.e. after C# 8.0), all reference types are non-nullable by default.
 
-You can still use nullable types if you really want, though. For any type `T`, the type`Nullable<T>` is nullable. `?T` is shorthand for `Nullable<T>`.
+You can still use nullable types if you really want, though. For any type `T`, the type`Nullable<T>` is nullable. `T?` is shorthand for `Nullable<T>`.
 
 ## Extension methods
 
