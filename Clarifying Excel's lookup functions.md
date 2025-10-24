@@ -14,9 +14,7 @@ Syntax: `LOOKUP(key, keys, values)`.
 
 Returns the result of the pseudocode `values[keys.indexOf(key)]`, where `keys.indexOf(key)` is the index of the `key` in `keys`, when `keys` is treated as an array.
 
-```
-key` - a value that exists in `keys
-```
+`key` - a value that exists in `keys`
 
 `keys` - a 1D range of "keys"
 
@@ -34,9 +32,7 @@ Syntax: `VLOOKUP(key, table, valuesIndex, fuzzyMatch)`.
 
 Returns the result of the pseudocode `values[keys.indexOf(key)]`, where `keys` is the column of "keys", "values" is the column of "values", and where `keys.indexOf(key)` is the index of the `key` in `keys`, when `keys` is treated as an array.
 
-```
-key` - a value that exists in `keys
-```
+`key` - a value that exists in `keys`
 
 `table` - a 2D range that contains the column of "keys" and the column of "values" OR a table that contains the column of "keys" and the column of "values"
 
