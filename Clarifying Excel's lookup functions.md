@@ -1,6 +1,6 @@
 I've decided to write some of my own documentation for common use cases of the Excel functions `LOOKUP`, `VLOOKUP`, `HLOOKUP` and `XLOOKUP` because the official documentation is pretty confusing. It uses "lookup value" as a synonym for "key", when one would conventionally expect a "lookup value" to be a synonym for "value"! (After all, in the typical key-value terminology, "values" are obtained as the result of looking up "keys"!)
 
-Before jumping in- here's a quick overview. Thankfuly, **all four lookup functions essentially return the value coorresponding to the key**. Additionally,
+Before jumping in- here's a quick overview. **All four lookup functions essentially return the result of the pseudocode `values[keys.indexOf(key)]`**, where, given arrays of "keys" and "values" named `keys` and `values`, respectively, `keys.IndexOf(key)` is the index of the `key` in the array `keys`. Additionally,
 
 - `LOOKUP` is the most simplistic of the four functions- it pretty much looks up "values" from "keys" like you would expect.
 - The "V" and "H" in `VLOOKUP` and `HLOOKUP` stand for "vertical" and "horizontal", respectively; in `VLOOKUP`, the provided 1D ranges must be columns, and in `HLOOKUP` they must be rows.
@@ -68,3 +68,4 @@ Returns the result of the pseudocode `values[keys.indexOf(key)]`, where `keys.in
 Notes:
 
 - A 1D range can be either a row or a column.
+
