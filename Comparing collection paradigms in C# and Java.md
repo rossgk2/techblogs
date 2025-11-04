@@ -2,20 +2,19 @@
 
 ## Abstract data types
 
-| Abstract data type                    | Legacy C# interface | Modern C# interface | Legacy Java interface | Modern Java interface |
-| ------------------------------------- | ------------------- | ------------------- | --------------------- | --------------------- |
-| "Enumerable" or "iterable" collection | `IEnumerable`       | `IEnumerable<T>`    | `Iterable`            | `Iterable<T>`         |
-| Collection                            | `ICollection`       | `ICollection<T>`    | `Collection`          | `Collection<T>`       |
-| Dynamically-sized list                | `IList`             | `IList<T>`          | `List`                | `List<T>`             |
+| Abstract data type                                           | Legacy C# interface | Modern C# interface | Legacy Java interface | Modern Java interface |
+| ------------------------------------------------------------ | ------------------- | ------------------- | --------------------- | --------------------- |
+| Immutable view with forward sequential read access           | `IEnumerable`       | `IEnumerable<T>`    | `Iterable`            | `Iterable<T>`         |
+| Mutable view with forward sequential read access and unpredictable write access | `ICollection`       | `ICollection<T>`    | `Collection`          | `Collection<T>`       |
+| Dynamically-sized view of unique items with read and write access | *(none)*            | `ISet<T>`           | ``Set``               | `Set<T>`              |
+| Dynamically-sized view with index-based read and write access | `IList`             | `IList<T>`          | `List`                | `List<T>`             |
+| Dynamically-sized view of key-value pairs                    | `IDictionary`       | `IDictionary<K,V>`  | `Map`                 | `Map<K,V>`            |
 
 ## Java's intuitive collection type hierarchy
 
 In Java, collection type classes implement the interface that corresponds to their abstract data type. For instance, since `ArrayList<T>` and `LinkedList<T>` implement the same abstract data type- that of a dynamically sized list- they are both implementations of the `List<T>` interface. We have this inheritance graph:
 
-- ```
-  List<T>
-  ```
-
+- `List<T>`
   - `ArrayList<T>`
   - `LinkedList<T>`
 
@@ -54,6 +53,23 @@ That's how we end up with `LinkedList<T>` implementing `ICollection<T>` in C#.
 
 ## Summary of collection classes
 
+### `ICollection` (C#), `Collection` interface (Java) implementations
+
+| Description               | Legacy C# class                | Modern C# class                           | Legacy Java class                               | Modern Java class                                        |
+| ------------------------- | ------------------------------ | ----------------------------------------- | ----------------------------------------------- | -------------------------------------------------------- |
+| Bidirectional linked list | *(none)*                       | `LinkedList<T> implements ICollection<T>` | `Deque implements Queue implements Collection`  | `Deque<T> implements Queue<T> implements Collection<T>`  |
+| Queue (FIFO)              | `Queue implements ICollection` | `Queue<T> implements ICollection<T>`      | `Queue implements Collection`                   | `Queue<T> implements Collection<T>`                      |
+| Stack (LIFO)              | `Stack implements ICollection` | `Stack<T> implements ICollection<T>`      | `Deque implements Queue implements Collection`* | `Deque<T> implements Queue<T> implements Collection<T>`* |
+
+\* Note, the Java documentation says that a double ended queue is Java's best implementation of a stack. Though there does exist a `Stack` type, using it is discouraged, since it inherits from the legacy `Vector` class.
+
+### `ISet` (C#), `Set` interface (Java)
+
+| Description           | Legacy C# | Modern C#                         | Legacy Java                    | Modern Java                          |
+| --------------------- | --------- | --------------------------------- | ------------------------------ | ------------------------------------ |
+| Hash set              | *(none)*  | `HashSet<T> implements ISet<T>`   | `HashSet implements Set`       | `HashSet<T> implements Set<T>`       |
+| Sorted Set / Tree Set | *(none)*  | `SortedSet<T> implements ISet<T>` | `TreeSet implements SortedSet` | `TreeSet<T> implements SortedSet<T>` |
+
 ### `IList` (C#), `List` interface (Java) implementations
 
 | Implementation            | Notes           | Legacy C# class              | Modern C# class               | Legacy Java class                                   | Modern Java class                                            |
@@ -73,23 +89,6 @@ As noted above, the `LinkedList<T>` of C# does not implement `IList<T>`, since, 
 | Sorted dictionary (array-based) | `SortedList implements IDictionary` | `SortedList<K,V> implements IDictionary<K,V>`       | *(none)*                                   | *(none)*                                                  |
 
 Note how `SortedList` and `SortedList<K,V>`  are misleading names for what are really array-based implementations of `IDictionary` and `IDictionary<K,V>`.
-
-### `ICollection` (C#), `Collection` interface (Java) implementations
-
-| Description               | Legacy C# class                | Modern C# class                           | Legacy Java class                               | Modern Java class                                        |
-| ------------------------- | ------------------------------ | ----------------------------------------- | ----------------------------------------------- | -------------------------------------------------------- |
-| Bidirectional linked list | *(none)*                       | `LinkedList<T> implements ICollection<T>` | `Deque implements Queue implements Collection`  | `Deque<T> implements Queue<T> implements Collection<T>`  |
-| Queue (FIFO)              | `Queue implements ICollection` | `Queue<T> implements ICollection<T>`      | `Queue implements Collection`                   | `Queue<T> implements Collection<T>`                      |
-| Stack (LIFO)              | `Stack implements ICollection` | `Stack<T> implements ICollection<T>`      | `Deque implements Queue implements Collection`* | `Deque<T> implements Queue<T> implements Collection<T>`* |
-
-\* Note, the Java documentation says that a double ended queue is Java's best implementation of a stack. Though there does exist a `Stack` type, using it is discouraged, since it inherits from the legacy `Vector` class.
-
-### `ISet` (C#), `Set` interface (Java)
-
-| Description           | Legacy C# | Modern C#                         | Legacy Java                    | Modern Java                          |
-| --------------------- | --------- | --------------------------------- | ------------------------------ | ------------------------------------ |
-| Hash set              | *(none)*  | `HashSet<T> implements ISet<T>`   | `HashSet implements Set`       | `HashSet<T> implements Set<T>`       |
-| Sorted Set / Tree Set | *(none)*  | `SortedSet<T> implements ISet<T>` | `TreeSet implements SortedSet` | `TreeSet<T> implements SortedSet<T>` |
 
 ## Appendix: in C#, `T` is not equal to `T<object>` at runtime
 
