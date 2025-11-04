@@ -104,4 +104,4 @@ Java uses *runtime type erasure* to implement type parameters. This has the impl
 
 This is not the case in C#. The types  `T<S1>` and `T<S2>` are distinct at both compile time and runtime. While it *is* overall good that type parameters are properly represented at runtime in C#, there is the unfortunate side-effect that, since type parameters weren't an original language feature, the types `T` and `T<object>` are not equal at runtime. 
 
-So, for instance, `IList` is unintuitively a different type than `IList<object>`.
+So, for instance, `IList` is unintuitively a different type than `IList<object>` in C#.
