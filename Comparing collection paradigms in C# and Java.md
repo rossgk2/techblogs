@@ -12,10 +12,7 @@
 
 In Java, collection type classes implement the interface that corresponds to their abstract data type. For instance, since `ArrayList<T>` and `LinkedList<T>` implement the same abstract data type- that of a dynamically sized list- they are both implementations of the `List<T>` interface. We have this inheritance graph:
 
-- ```
-  List<T>
-  ```
-
+- `List`
   - `ArrayList<T>`
   - `LinkedList<T>`
 
