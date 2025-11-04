@@ -22,7 +22,7 @@ This is intuitive and makes a lot of sense.
 
 Unfortunately, C# organizes its collection interface inheritance graph much less intuitively.
 
-### `List<T>` is `ArrayList<T>` in spirit (even though `ArrayList<T>` doesn't actually exist)
+### `List<T>` is `ArrayList<T>` in spirit (`ArrayList<T>` doesn't actually exist)
 
 In the C# standard library, the go-to implementation of `IList<T>`, called `List<T>`, is actually not abstract, like the name `List<T>` suggests, but is actually implemented by using a dynamically resizing array, just as is the `ArrayList<T>` of Java. Wouldn't it make more sense if the `List<T>`of C# were called `ArrayList<T>`?
 
