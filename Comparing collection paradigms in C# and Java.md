@@ -55,7 +55,7 @@ Cleary, C# organizes the collection type hierarchy fundamentally differently tha
 
 In C#, `IList<T>` is associated with the performance standard of an array implementation of a list. Of course, a linked list implementation will not have the performance standard of an array implementation, so, according to the above rule for C#, `LinkedList<T>` must not implement `IList<T>`.
 
-Of course, disregarding performance standards, a linked list could be used to implement an `IList<T>`, so it is guaranteed that a linked list could be used to implement any superinterface of `IList<T>`. This suggests an easy fix: we just make `LinkedList<T>` an implementor of `ICollection<T>`, which is the immediate superinterface of `IList<T>`.
+Since- disregarding performance standards- a linked list could be used to implement an `IList<T>`, it is guaranteed that a linked list could be used to implement any superinterface of `IList<T>`. In particular, a linked list can implement `ICollection<T>`. So, if we defined the performance standard of `ICollection<T>` to be that of a linked list, then it would make sense to define `LinkedList<T>` to implement `ICollection<T>`.
 
 That's how we end up with `LinkedList<T>` implementing `ICollection<T>` in C#.
 
