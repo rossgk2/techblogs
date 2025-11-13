@@ -4,7 +4,7 @@
 
 Most programming languages provide *collections* libraries that implement various sorts of ways to organize data. Below is a table associating language-agnostic descriptions of collection interfaces, or *abstract data types*, to the coorresponding C# and Java interfaces.
 
-Type parameters, which are unhelpfully called *generics* in the standard terminology, are highly relevant to the implementation of collections libraries, so we will also be sure to distinguish between "legacy" code that predates generics and "modern" code that uses generics. 
+Type parameters, which are unhelpfully called *generics* in the standard terminology, are highly relevant to the implementation of collections libraries, so we distinguish between "legacy" code that predates generics and "modern" code that uses generics. 
 
 | Abstract data type                                           | Legacy C# interface | Modern C# interface | Legacy Java interface | Modern Java interface |
 | ------------------------------------------------------------ | ------------------- | ------------------- | --------------------- | --------------------- |
