@@ -8,8 +8,8 @@ Type parameters, which are unhelpfully called *generics* in the standard termino
 
 | Abstract data type                                           | Legacy C# interface | Modern C# interface | Legacy Java interface | Modern Java interface |
 | ------------------------------------------------------------ | ------------------- | ------------------- | --------------------- | --------------------- |
-| Immutable collection with forward sequential read access     | `IEnumerable`       | `IEnumerable<T>`    | `Iterable`            | `Iterable<T>`         |
-| Mutable collection with forward sequential read access and unpredictable write access | `ICollection`       | `ICollection<T>`    | `Collection`          | `Collection<T>`       |
+| Collection with forward sequential read access and no write access     | `IEnumerable`       | `IEnumerable<T>`    | `Iterable`            | `Iterable<T>`         |
+| Collection with forward sequential read access and unpredictable write access | `ICollection`       | `ICollection<T>`    | `Collection`          | `Collection<T>`       |
 | Dynamically-sized collection of unique items with read and write access | *(none)*            | `ISet<T>`           | ``Set``               | `Set<T>`              |
 | Dynamically-sized collection with index-based read and write access | `IList`             | `IList<T>`          | `List`                | `List<T>`             |
 | Dynamically-sized collection of key-value pairs              | `IDictionary`       | `IDictionary<K,V>`  | `Map`                 | `Map<K,V>`            |
