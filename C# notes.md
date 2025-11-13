@@ -1,4 +1,4 @@
-# C# Features by Category and Version
+# C# features by category and version
 
 ## Properties
 
