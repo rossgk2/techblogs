@@ -2,13 +2,21 @@
 
 ## Abstract data types
 
+Most programming languages provide *collections* libraries that implement various sorts of ways to organize data. Below is a table associating language-agnostic descriptions of collection interfaces, or *abstract data types*, to the coorresponding C# and Java interfaces.
+
+Type parameters, which are unhelpfully called *generics* in the standard terminology, are highly relevant to the implementation of collections libraries, so we distinguish between "legacy" code that predates generics and "modern" code that uses generics. 
+
 | Abstract data type                                           | Legacy C# interface | Modern C# interface | Legacy Java interface | Modern Java interface |
 | ------------------------------------------------------------ | ------------------- | ------------------- | --------------------- | --------------------- |
-| Immutable collection with forward sequential read access     | `IEnumerable`       | `IEnumerable<T>`    | `Iterable`            | `Iterable<T>`         |
-| Mutable collection with forward sequential read access and unpredictable write access | `ICollection`       | `ICollection<T>`    | `Collection`          | `Collection<T>`       |
+| Collection with forward sequential read access and no write access     | `IEnumerable`       | `IEnumerable<T>`    | `Iterable`            | `Iterable<T>`         |
+| Collection with forward sequential read access and unpredictable write access | `ICollection`       | `ICollection<T>`    | `Collection`          | `Collection<T>`       |
 | Dynamically-sized collection of unique items with read and write access | *(none)*            | `ISet<T>`           | ``Set``               | `Set<T>`              |
 | Dynamically-sized collection with index-based read and write access | `IList`             | `IList<T>`          | `List`                | `List<T>`             |
 | Dynamically-sized collection of key-value pairs              | `IDictionary`       | `IDictionary<K,V>`  | `Map`                 | `Map<K,V>`            |
+
+One interesting superiority of C# over Java is that, in C#, arrays implement collection interfaces (specifically, `IEnumerable<T>`, `ICollection<T>`, and `IList<T>` for modern C#), while in Java, arrays are considered a "primitive type" that do not implement any collection interfaces. Aside from this point, though, I find the way Java organizes its collection types much more intuitive.
+
+In this article, we'll briefly go over how Java does things, and then show how the collection type hierarchy in C# is confusing.
 
 ## Java's intuitive collection type hierarchy
 
@@ -47,7 +55,7 @@ Cleary, C# organizes the collection type hierarchy fundamentally differently tha
 
 In C#, `IList<T>` is associated with the performance standard of an array implementation of a list. Of course, a linked list implementation will not have the performance standard of an array implementation, so, according to the above rule for C#, `LinkedList<T>` must not implement `IList<T>`.
 
-Of course, disregarding performance standards, a linked list could be used to implement an `IList<T>`, so it is guaranteed that a linked list could be used to implement any superinterface of `IList<T>`. This suggests an easy fix: we just make `LinkedList<T>` an implementor of `ICollection<T>`, which is the immediate superinterface of `IList<T>`.
+Since- disregarding performance standards- a linked list could be used to implement an `IList<T>`, it is guaranteed that a linked list could be used to implement any superinterface of `IList<T>`. In particular, a linked list can implement `ICollection<T>`. So, if we defined the performance standard of `ICollection<T>` to be that of a linked list, then it would make sense to define `LinkedList<T>` to implement `ICollection<T>`.
 
 That's how we end up with `LinkedList<T>` implementing `ICollection<T>` in C#.
 
@@ -96,4 +104,4 @@ Java uses *runtime type erasure* to implement type parameters. This has the impl
 
 This is not the case in C#. The types  `T<S1>` and `T<S2>` are distinct at both compile time and runtime. While it *is* overall good that type parameters are properly represented at runtime in C#, there is the unfortunate side-effect that, since type parameters weren't an original language feature, the types `T` and `T<object>` are not equal at runtime. 
 
-So, for instance, `IList` is unintuitively a different type than `IList<object>`.
+So, for instance, `IList` is unintuitively a different type than `IList<object>` in C#.
