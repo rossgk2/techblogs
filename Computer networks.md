@@ -72,7 +72,7 @@ If we have a way to uniquely identify every network-level switch, packet forward
 - Label every packet with the unique identifier of its source and the unique identifier of its intended final destination.
 - Have every network-layer switch maintain a *forwarding table* that maps "unique identifier of desired destination" to "unique identifier of next hop".
 - Use the following logic at each network-layer switch s:
-	- For each incoming packet p, if the intended final destination of p is not equal to s, send p to the "next hop" specified by the forwarding table of s
+	- For each incoming packet p, if the intended final destination of p is not equal to s, send p to the "next hop" specified by the forwarding table of s.
 
 Reality is a little complicated, since unique identifiers- called "IP addresses" are set up in a decentralized way. Here are the details:
 - (Router). A *router* is a network-layer switch.
@@ -134,6 +134,7 @@ In the more modern approach of logically centralized control, a remote computer 
 | Last-mile          | Copper phone lines - Digital Subscriber Line<br />Copper lines - G.Fast<br />fiber-optic cables |
 
 | LAN                | Ethernet, Wi-Fi                                              |
+
 
 
 
