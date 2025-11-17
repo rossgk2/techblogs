@@ -57,15 +57,24 @@ The sender and receiver are computers that support protocols in all five layers.
 
 ### Forwarding and routing
 
-The "data plane" aspect of the network layer concerns the *forwarding* of packets, while the "control plane" aspect of the network layer concerns the *routing* of packets. *[Computer Networks: A Systems Approach](https://book.systemsapproach.org/internetworking/routing.html)* gives the following definitions:
+The "data plane" aspect of the network layer concerns the *forwarding* of packets, while the "control plane" aspect of the network layer concerns the *routing* of packets. Paraphrasing *[Computer Networks: A Systems Approach](https://book.systemsapproach.org/internetworking/routing.html)*, we have the following definitions:
 
-* *Forwarding* consists of [a network-level switch] receiving a packet, looking up its destination address in a table, and sending the packet in a direction determined by that table.
-* *Routing* is the process by which forwarding tables are built.
+* *Forwarding* consists of a network-level switch receiving a packet, looking up its destination address in a table, and sending the packet in a direction determined by that table.
+* *Routing* is the process that determines how every forwarding table should be organized, so as to optimize which of the multiple paths between a sender and receiver each packet should take.
 
-## Network - data plane
+Forwarding is a *local* process that works the same for every switch[^1]. Routing is a *global* process that involves the forwarding table for all switches.
 
-When the "data plane" aspect of the network layer is mentioned, usually the speaker is referring to conventions, like "IP addresses", that are involved in the implementation of packet *forwarding*.
+[^1]: The forwarding process is the same for every switch in the following sense: if two switches have the same forwarding table, then they will forward packets in the same way.
 
+## Forwarding
+
+If we have a way to uniquely identify every network-level switch, packet forwarding is pretty simple. We can just do the following:
+- Label every packet with the unique identifier of its source and the unique identifier of its intended final destination.
+- Have every network-layer switch maintain a *forwarding table* that maps "unique identifier of desired destination" to "unique identifier of next hop".
+- Use the following logic at each network-layer switch s:
+	- For each incoming packet p, if the intended final destination of p is not equal to s, send p to the "next hop" specified by the forwarding table of s
+
+Reality is a little complicated, since unique identifiers- called "IP addresses" are set up in a decentralized way. Here are the details:
 - (Router). A *router* is a network-layer switch.
 - (Host and router interfaces). Hosts can have multiple *interfaces*; for example, a host might have a wired interface (e.g. Ethernet) and a wireless interface (WiFi). Routers have multiple interfaces; each one is associated with a host interface.
 - (IP addresses). Each host and router interface is identified by *internet protocol (IP) address*, which is a 32-bit identifier of the form x1.x2.x3.x4, where each x_i is an 8-digit binary number, or *octet*. IP addresses are most commonly written in their *decimal form*, which is obtained by converting each octet to a decimal. for example, 11011111.00000001.00000001.00000100 [binary representation] = 223.1.1.4 [decimal representation].
@@ -82,9 +91,8 @@ When the "data plane" aspect of the network layer is mentioned, usually the spea
   	- Obtained dynamically from a server via Dynamic Host Configuration Protocol (DHCP). In DHCP, messages are sent back and forth between the host and the *DHCP server* associated with the host's network's router to facilitate the requesting and allocating of an IP address.  
   		- Q: How are messages sent and recieved if IP addresses haven't been established yet? A: Broadcasting is used. Q: But then how does the DHCP server ensure the client accepting an address is the one requesting it? A: Each client is required to send their MAC addresses when sending a request to the DHCP server and when accepting an offer from the DHCP server. The DHCP server can therefore compare the MAC address recieved in the request to the one receieved along with the acceptance of the offer.
 
-## Network - control plane
+## Routing
 
-The "control plane" aspect of the network layer concerns *routing* packets *within a network*, which is determining which of the multiple paths between a sender and receiver a packet takes.
 - There are two ways to implement routing. The traditional and most common way is to configure the forwarding table of each router one router at a time. In the more modern *software-defined networking*, a single software program is used to configure the forwarding tables for all routers.
 	- E.g. OpenFlow is a software-defined networking protocol
 - The Internet is divided into different subnetworks called "autonomous systems" or "domains". All routers in the same domain use the same routing protocol. *Gateway routers*, or *gateways*, perform routing between domains.
@@ -126,5 +134,6 @@ In the more modern approach of logically centralized control, a remote computer 
 | Last-mile          | Copper phone lines - Digital Subscriber Line<br />Copper lines - G.Fast<br />fiber-optic cables |
 
 | LAN                | Ethernet, Wi-Fi                                              |
+
 
 
