@@ -64,7 +64,7 @@ The "data plane" aspect of the network layer concerns the *forwarding* of packet
 
 ## Network - data plane
 
-The "data plane" aspect of the network layer concerns the labeling of packets with metadata that specifies their source and destination and the correct interpretation of this metadata by network-level switches.
+When the "data plane" aspect of the network layer is mentioned, usually the speaker is referring to conventions, like "IP addresses", that are involved in the implementation of packet *forwarding*.
 
 - (Router). A *router* is a network-layer switch.
 - (Host and router interfaces). Hosts can have multiple *interfaces*; for example, a host might have a wired interface (e.g. Ethernet) and a wireless interface (WiFi). Routers have multiple interfaces; each one is associated with a host interface.
@@ -126,3 +126,4 @@ In the more modern approach of logically centralized control, a remote computer 
 | Last-mile          | Copper phone lines - Digital Subscriber Line<br />Copper lines - G.Fast<br />fiber-optic cables |
 
 | LAN                | Ethernet, Wi-Fi                                              |
+
