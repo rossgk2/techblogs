@@ -62,7 +62,7 @@ The "data plane" aspect of the network layer concerns the *forwarding* of packet
 * *Forwarding* consists of a network-level switch receiving a packet, looking up its destination address in a table, and sending the packet in a direction determined by that table.
 * *Routing* is the process that determines how every forwarding table should be organized, so as to optimize which of the multiple paths between a sender and receiver each packet should take.
 
-Forwarding is a *local* process that works the same for every switch[^1]. Routing is a *global* process that involves the forwarding table for all switches.
+Forwarding is a *local* process that works the same for every switch[^1]. In routing, each forwarding table is modified in a different way so as to produce a cohesive *global* result.
 
 [^1]: The forwarding process is the same for every switch in the following sense: if two switches have the same forwarding table, then they will forward packets in the same way.
 
@@ -134,6 +134,7 @@ In the more modern approach of logically centralized control, a remote computer 
 | Last-mile          | Copper phone lines - Digital Subscriber Line<br />Copper lines - G.Fast<br />fiber-optic cables |
 
 | LAN                | Ethernet, Wi-Fi                                              |
+
 
 
 
