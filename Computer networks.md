@@ -59,8 +59,8 @@ The sender and receiver are computers that support protocols in all five layers.
 
 The "data plane" aspect of the network layer concerns the *forwarding* of packets, while the "control plane" aspect of the network layer concerns the *routing* of packets. *[Computer Networks: A Systems Approach](https://book.systemsapproach.org/internetworking/routing.html)* gives the following definitions:
 
-* Forwarding consists of [a network-level switch] receiving a packet, looking up its destination address in a table, and sending the packet in a direction determined by that table.
-* Routing is the process by which forwarding tables are built.
+* *Forwarding* consists of [a network-level switch] receiving a packet, looking up its destination address in a table, and sending the packet in a direction determined by that table.
+* *Routing* is the process by which forwarding tables are built.
 
 ## Network - data plane
 
@@ -126,4 +126,5 @@ In the more modern approach of logically centralized control, a remote computer 
 | Last-mile          | Copper phone lines - Digital Subscriber Line<br />Copper lines - G.Fast<br />fiber-optic cables |
 
 | LAN                | Ethernet, Wi-Fi                                              |
+
 
