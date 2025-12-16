@@ -13,8 +13,10 @@
 | Feature                                                      | Description, if not self-explanatory                         | Version |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------- |
 | Inline constructors                                          | e.g. `public class Cls(string field1, int field2)`)          | 12      |
+| Primary constructors for `class`es                           | Results in every constructor parameter being visible throughout the entire class; *very* useful for reducing dependency injection boilerplate. | 12      |
 | [Extension methods](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods) | Extension methods are instance methods that can't access `private` or `protected` members defined outside of an already-defined type. They are implemented as syntactic sugar for `static` methods that take the already-defined type as argument | 3.0     |
 | `record class` (or `record`) and `record struct`             | Immutable types with field-based equality. `record class` defines a reference type and `record struct` defines a value type. | 9       |
+| Primary constructors for `record`s                           | Results in every constructor parameter corresponding to a `get; init;` property of the same name. | 9       |
 
 ## Using types
 
@@ -144,7 +146,7 @@ var obj = new
 
 ## Tuples vs. lists
 
-I find that Python version of things highlights the core ideas best. In Python, lists and tuples can both contain objects of multiple types. The core difference is that lists are mutable, while tuples are immutable.
+I find that the language-agnostic distinction between tuples and lists is best reflected by the Python take on these concepts. In Python, while lists and tuples can both contain objects of multiple types, the core difference is that *lists are mutable*, while *tuples are immutable*.
 
 This is relevant for understanding the purpose of `Tuple` and `ValueTuple`. A `Tuple` is a reference type version of the tuple type. A `ValueTuple` is a value type version of the tuple type.
 
@@ -156,21 +158,16 @@ I used to think that in the most abstract, language-agnostic sense, structs only
 
 The real difference is that "struct" is synonymous with "value type", and "class" is synonymous with "reference type". As a secondary concern, structs do not support inheritance, while classes do. 
 
-This is relevant for understanding the difference between `record class` and  `record struct`. The
-
-## Properties
-
-We like to think of properties as being fields plus syntactical sugar; technically, they are not. You might think that you could use `public readonly string field { get; init; }` in a class, but you cannot, since `readonly` can only be applied to fields and `init` can only be used in properties.
-
-## Immutability constructs: `const`, `readonly`, `init`, `record class` and `record struct`,  `sealed`
-
-
-
-## `await foreach` vs. `yield`
+This is relevant for understanding the difference between `record class` and  `record struct`.
 
 ## Access and immutability modifiers
 
-Unfortunately, the Venn diagram of modifiers that can be applied to fields and modifiers that can be applied to function arguments doesn't have that much of an intersection.
+Unfortunately, in C#,
+
+* Properties are *not* just fields plus syntactical sugar.
+* Function arguments are not* just fields just in a different context.
+
+So, unfortunately, there are some modifiers that apply one of properties, function arguments, or fields, but not the other two. And in fact the distinction goes further. The below table captures it all...
 
 | Modifier           | Description                                                  | Field   | Property | Function argument | Method  | Local Variable            |
 | ------------------ | ------------------------------------------------------------ | ------- | -------- | ----------------- | ------- | ------------------------- |
@@ -196,3 +193,9 @@ Unfortunately, the Venn diagram of modifiers that can be applied to fields and m
 | out                | Passes argument by reference, must be assigned in method     | No      | No       | **Yes**           | No      | No                        |
 | in                 | Passes argument by reference, read-only                      | No      | No       | **Yes**           | No      | No                        |
 | required           | Ensures property is set during object initialization (C# 11+) | No      | **Yes**  | No                | No      | No                        |
+
+## Look into later...
+
+### Immutability constructs: `const`, `readonly`, `init`, `record class` and `record struct`,  `sealed`
+
+### `await foreach` vs. `yield`
