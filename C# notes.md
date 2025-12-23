@@ -4,15 +4,17 @@
 
 | Feature                                                                 | Description, if not self-explanatory | Version     |
 |-------------------------------------------------------------------------|-------------|-------------|
-| Properties, [automatically implemented properties](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/properties), [default values for properties](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/properties) | Syntactic sugar for getter and setter methods | 1.0, 3.0, 6.0 |
-| `init` accessor for properties                                          |            | 9           |
+| Properties | Syntactic sugar for getter and setter methods; e.g. `public string x { get { ... } private set { ... }}` | 1.0     |
+| [Automatically implemented properties](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/properties) | E.g. `public string x { get; set; }` | 3.0 |
+| [Default values for properties](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/properties) | E.g. `public string x { get; set; } = "hi" ` | 6.0 |
+| `init` modifier for properties                                  |            | 9           |
 | Implicit backing of a property by a field with `field` keyword |  | 14 |
 
 ## Defining types
 
 | Feature                                                      | Description, if not self-explanatory                         | Version |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------- |
-| Inline constructors                                          | e.g. `public class Cls(string field1, int field2)`)          | 12      |
+| Inline constructors                                          | E.g. `public class Cls(string field1, int field2)`)          | 12      |
 | Primary constructors for `class`es                           | Results in every constructor parameter being visible throughout the entire class; *very* useful for reducing dependency injection boilerplate. | 12      |
 | [Extension methods](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods) | Extension methods are instance methods that can't access `private` or `protected` members defined outside of an already-defined type. They are implemented as syntactic sugar for `static` methods that take the already-defined type as argument | 3.0     |
 | `record class` (or `record`) and `record struct`             | Immutable types with field-based equality. `record class` defines a reference type and `record struct` defines a value type. | 9       |
@@ -33,18 +35,19 @@
 
 ## Intuitive key-value support
 
-| Feature                                                      | Version                                                      |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| [Instantiation of existing classes](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/object-and-collection-initializers) with key-value syntax | 3.0                                                          |
-| [Instantiation of anonymous classes](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/anonymous-types) with key-value syntax | 3.0                                                          |
-| `Tuple`                                                      | A reference type version of a tuple. (See the additional notes for a reminder on what a tuple is.) |
-| `ValueTuple`s (e.g. `(int, string) x = (1, "hi");`)          | A value type version of a tuple. Note, all "tuple literals" are `ValueTuple`s, *not* `Tuple`s. (See the additional notes for a reminder on what a tuple is.) |
+| Feature                                                      | Description, if not self-explanatory                         | Version |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------- |
+| [Instantiation of existing classes](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/object-and-collection-initializers) with key-value syntax | E.g. `Cls obj1 = new Cls { field1 = 10, field2 = "hi" };`<br/>`Cls obj2 = new Cls("hi"){ field1 = 10 };` | 3.0     |
+| [Instantiation of anonymous classes](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/anonymous-types) with key-value syntax | E.g. `var obj = new { field1 = 10, field2 = "hi" };`         | 3.0     |
+| [Collection expressions](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/collection-expressions) | E.g. `List<string> weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]; ` instead of `List<string> weekDays = new List<string> {...}` | 12.0    |
+| `Tuple`                                                      | A reference type version of a tuple. (See the additional notes for a reminder on what a tuple is.) | 4.0     |
+| `ValueTuple`s (e.g. `(int, string) x = (1, "hi");`)          | A value type version of a tuple. Note, all "tuple literals" are `ValueTuple`s, *not* `Tuple`s. (See the additional notes for a reminder on what a tuple is.) | 7.0     |
 
 ## Methods
 
 | Feature                                                                 | Description, if not self-explanatory | Version     |
 |-------------------------------------------------------------------------|-------------|-------------|
-| Anonymous methods ("lambda expressions")                       |          | 3.0         |
+| Anonymous methods ("lambda expressions")                       |  | 3.0         |
 | [=> syntax for no-arg methods](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/statements-expressions-operators/expression-bodied-members), and for all method-like members |    | 6.0, 7.0   |
 | `in` keyword for method parameters | Basically `readonly` for method parameters | 7.2 |
 | `out` keyword for method parameters | Basically "must be written to" for method parameters | 1.0 |
@@ -100,15 +103,15 @@ Instantiation of an existing class:
 
 
 ```c#
-Cls obj = new Cls { field1 = 10, field2 = "hi" };
-Cls obj = new Cls("hi"){ field1 = 10 };
+Cls obj1 = new Cls { field1 = 10, field2 = "hi" };
+Cls obj2 = new Cls("hi"){ field1 = 10 };
 ```
 
 Instantiation of an anonymous class:
 
 
 ```c#
-var obj = new { field1 = 10, field2 = "hi" };
+var obj3 = new { field1 = 10, field2 = "hi" };
 ```
 
 Note, trying to specify types for `field1` and `field2` will result in a compilation error.
