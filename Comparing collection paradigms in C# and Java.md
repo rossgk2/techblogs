@@ -12,7 +12,7 @@ Type parameters, which are unhelpfully called *generics* in the standard termino
 | Collection with forward sequential read access and unpredictable write access | `ICollection`       | `ICollection<T>`    | `Collection`          | `Collection<T>`       |
 | Dynamically-sized collection of unique items with read and write access | *(none)*            | `ISet<T>`           | ``Set``               | `Set<T>`              |
 | Dynamically-sized collection with index-based read and write access | `IList`             | `IList<T>`          | `List`                | `List<T>`             |
-| Dynamically-sized collection of key-value pairs              | `IDictionary`       | `IDictionary<K,V>`  | `Map`                 | `Map<K,V>`            |
+| Dynamically-sized collection of key-value pairs with key-based read and write access              | `IDictionary`       | `IDictionary<K,V>`  | `Map`                 | `Map<K,V>`            |
 
 One interesting superiority of C# over Java is that, in C#, arrays implement collection interfaces (specifically, `IEnumerable<T>`, `ICollection<T>`, and `IList<T>` for modern C#), while in Java, arrays are considered a "primitive type" that do not implement any collection interfaces. Aside from this point, though, I find the way Java organizes its collection types much more intuitive.
 
