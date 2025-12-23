@@ -165,7 +165,7 @@ This is relevant for understanding the difference between `record class` and  `r
 Unfortunately, in C#,
 
 * Properties are *not* just fields plus syntactical sugar.
-* Function arguments are not* just fields just in a different context.
+* Function arguments are *not* just fields just in a different context.
 
 So, unfortunately, there are some modifiers that apply one of properties, function arguments, or fields, but not the other two. And in fact the distinction goes further. The below table captures it all...
 
