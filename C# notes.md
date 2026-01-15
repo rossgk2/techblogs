@@ -15,10 +15,10 @@
 | Feature                                                      | Description, if not self-explanatory                         | Version |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------- |
 | Inline constructors                                          | E.g. `public class Cls(string field1, int field2)`)          | 12      |
-| Primary constructors for `class`es                           | Results in every constructor parameter being visible throughout the entire class; *very* useful for reducing dependency injection boilerplate. | 12      |
+| Implicit constructors-with-parameters for `class`es          | In C#, all implicit constructors-with-parameters are primary. | 12      |
 | [Extension methods](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods) | Extension methods are instance methods that can't access `private` or `protected` members defined outside of an already-defined type. They are implemented as syntactic sugar for `static` methods that take the already-defined type as argument | 3.0     |
 | `record class` (or `record`) and `record struct`             | Immutable types with field-based equality. `record class` defines a reference type and `record struct` defines a value type. | 9       |
-| Primary constructors for `record`s                           | Results in every constructor parameter corresponding to a `get; init;` property of the same name. | 9       |
+| Implicit constructors-with-parameters for `record`s          | In C#, all implicit constructors-with-parameters are primary. <br />On a record, defining an implicit constructor-with-parameters is equivalent to defining one `get; init;` property for each parameter. | 9       |
 
 ## Using types
 
@@ -162,6 +162,14 @@ I used to think that in the most abstract, language-agnostic sense, structs only
 The real difference is that "struct" is synonymous with "value type", and "class" is synonymous with "reference type". As a secondary concern, structs do not support inheritance, while classes do. 
 
 This is relevant for understanding the difference between `record class` and  `record struct`.
+
+## Implicit and primary constructors
+
+An *implicit* constructor is a constructor whose body is inferred from more concise syntax placed after the `class` keyword, like `class Cls(int x, string y)`.  (Note: implicit constructors-without-parameters exist in all versions of C#; any class without an explicitly defined constructor has an implicit constructor taking no parameters. Implicit constructors-with-parameters were introduced for records in version 9 and for classes and structs in version 12.)
+
+A *primary* constructor is one that must be called at the beginning of every other constructor.
+
+C# 12 introduced implicit constructors, with the constraint that all implicit constructors are primary. 
 
 ## Access and immutability modifiers
 
