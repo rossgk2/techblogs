@@ -164,7 +164,7 @@ class Program
         services.AddTransient<Controller, Controller>();
         ServiceProvider mediator = services.BuildServiceProvider();
             
-        /* Get a Controller instance that has Dependency injected in for its IDependency constructor input. */
+        /* Get a Controller instance that has a Dependency instance injected into the IDependency input of its constructor. */
         Controller controller = mediator.GetRequiredService<Controller>();
 	}
 }       
