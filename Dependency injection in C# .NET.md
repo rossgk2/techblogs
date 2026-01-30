@@ -4,11 +4,11 @@ Fortunately, C# .NET's implementation of dependency injection is pretty straight
 
 # Dependency injection recap
 
-Here's a quick recap on what dependency injection entails. If you want more detail, [this article](https://blogs.perficient.com/2021/09/22/an-abstract-take-on-the-dependency-injection-pattern/) I wrote may be helpful.
+Here's a quick recap on what dependency injection entails. If you want more detail, [this article](https://github.com/rossgk2/techblogs/blob/main/An%20abstract%20take%20on%20the%20dependency%20injection%20pattern.md) I wrote may be helpful.
 
 In general, whether dependency injection is in play or not, classes may specify types- called *dependencies*- that they have *has-a* relationships with. 
 
-In dependency injection, instances of classes are not responsible for creating instances of their dependencies. Instead, a managing container maintains *has-a* relationships with instances of the classes, and the user specifies to the container which implementations of the dependencies they want to use by calling one of the container's methods, or by writing so-called "configuration code" that is interpreted by the container. At runtime, the container "injects" these implementations into the class instances.
+In dependency injection, instances of classes are not responsible for creating instances of their dependencies. Instead, a managing container maintains *has-a* relationships with interfaces representing the dependencies, and the user specifies to the container which implementations of the dependency interfaces they want to use by calling one of the container's methods, or by writing so-called "configuration code" that is interpreted by the container. At runtime, the container "injects" these implementations into the class instances.
 
 Why use dependency injection? The main point is to *separate interface from implementation*. Why is this important? I suggest you read the linked article above for more details.
 
@@ -18,9 +18,9 @@ The first thing to be aware of when learning dependency injection in C# .NET is 
 
 | Microsoft phrase     | Meaning                                               |
 | -------------------- | ----------------------------------------------------- |
-| service              | dependency                                            |
-| service registration | the storing of dependencies in the managing container |
-| service resolving    | the injection at runtime of a dependency              |
+| service              | dependency interface                                            |
+| service registration | specification to the managing container what implementation should be used for a particular dependency interface |
+| service resolving    | the injection at runtime of the instance that was registered into an interface-typed member                |
 
 # `ServiceDescriptor`
 
