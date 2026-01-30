@@ -158,7 +158,11 @@ class Program
 {
 	static void Main(string[] args)
     {
-    	/* Same as above ^ */
+        /* This global configuration code is the same as before. */
+    	var services = new ServiceCollection();
+        services.AddTransient<IDependency, Dependency>();
+        services.AddTransient<Controller, Controller>();
+        ServiceProvider mediator = services.BuildServiceProvider();
             
         /* Get a Controller instance that has Dependency injected in for its IDependency constructor input. */
         Controller controller = mediator.GetRequiredService<Controller>();
