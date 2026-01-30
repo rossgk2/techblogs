@@ -18,8 +18,7 @@ public class Controller
 		dependency = new Dependency();
 	}
 
-    /* A Controller instance controller will use the helper method
-        whenever controller.controllerMethod() is called. */
+    /* A Controller instance controller will use the helper method whenever controller.controllerMethod() is called. */
 	public int controllerMethod()
 	{
 		int temp = dependency.helperMethod();
@@ -96,7 +95,8 @@ class Program
     static void Main(string[] args)
     {
         /* Global dependency configuration. */
-        /* Don't worry about what "AddTransient" means. For the purposes of this tutorial, you can read "AddTransient<TBase, TImpl>" as something like "AddAssociation<TBase, TImpl>"; it simply associates a base type (often an interface) to a derived type. */
+        /* Don't worry about what "AddTransient" means. For the purposes of this tutorial, you can read "AddTransient<TBase, TImpl>"
+           as something like "AddAssociation<TBase, TImpl>"; it simply associates a base type (often an interface) to a derived type. */
 		var services = new ServiceCollection();
         services.AddTransient<IDependency, Dependency>();
         services.AddTransient<Controller, Controller>();
