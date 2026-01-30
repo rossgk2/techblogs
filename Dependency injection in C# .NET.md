@@ -107,7 +107,7 @@ class Program
 }
 ```
 
-Since the mediator object knows about the global dependency configuration, then, whenever, whenever we request a controller instance from the mediator, it could "inject" the appropriate dependency instances into the constructors of the controller instances being initialized.
+Since the mediator object knows the global dependency configuration, then, whenever, whenever we request a controller instance from the mediator, it could "inject" the appropriate dependency instances into the constructors of the controller instances being initialized.
 
 Of course, this would require us to change the constructor of `Controller` so that it can indeed be "injected" into:
 
