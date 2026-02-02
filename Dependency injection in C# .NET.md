@@ -36,7 +36,7 @@ public class Dependency
 }
 ```
 
-In the above, `Controller` depends on a concrete type, `Dependency`. It's better practice, though, to have  `Controller` depend on an *interface*. 
+In the above,  the class`Controller` depends on a concrete type, `Dependency`. It's better practice, though, to have  it depend on an *interface*. 
 
 So, a slight improvement to the above is achieved by creating an `IDependency` interface, having  `Dependency` implement `IDependency`, and changing the type of the `dependency` member from `Dependency` to `IDependency`:
 
@@ -80,7 +80,7 @@ Take note of the code in the constructor of `Controller`. Since it associates th
 
 ## Mediator objects and dependency injection
 
-In the above approach, dependency configuration is localized to each class-with-dependencies.
+In the above approach, dependency configuration is localized to each controller (each class that has dependencies).
 
 Another arguably better way of doing things is maintaining all the dependency configuration code in one place- having a *global* dependency configuration, in other words.
 
