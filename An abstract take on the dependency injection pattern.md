@@ -28,9 +28,9 @@ public class Cls
 `Cls` *depends* on `Impl` because it requires knowledge of the `Impl` type in order to execute `new Impl()`. To restate, our current dependency situation is:
 
 ```
-Cls` --creates--> `Impl
-Cls` --has--> `Intf
-Impl` --is--> `Intf
+Cls --creates--> Impl
+Cls --has--> Intf
+Impl --is--> Intf
 ```
 
 We want to be in a dependency situation in which `Cls` depends only on `Intf` and not on `Impl`. I.e., we want to *decouple* the implementation of `Cls` from any particular implementation of `Intf`. As described in some [Microsoft documentation](https://docs.microsoft.com/en-us/dotnet/core/extensions/dependency-injection), this decoupling is desired because:
@@ -48,11 +48,11 @@ To improve our dependency situation, we will pass the responsibility of creating
  This setup is called *dependency* *injection.* Implementing dependency injection places us in the following much improved dependency situation:
 
 ```
-Cls` --has--> `Intf
-Container` --has--> `Cls
-Container` --has--> `Intf
-Container` --creates--> `Impl
-Impl` --is--> `Intf
+Cls --has--> Intf
+Container --has--> Cls
+Container --has--> Intf
+Container --creates--> Impl
+Impl --is--> `Intf
 ```
 
 Now, `Cls` depends only on `Intf` and not on `Impl`, as desired.
