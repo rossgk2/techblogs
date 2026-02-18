@@ -138,7 +138,7 @@ could be represented by instantiating an anonymous class like this:
 var obj = new
 {
     a1 = 1,
-    a2 = new object[]
+    a2 = new
     {
         new { c3 = "hi", c4 = "bye" },
         2
