@@ -37,10 +37,11 @@
 
 | Feature                                                      | Description, if not self-explanatory                         | Version |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------- |
-| [Instantiation of existing classes](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/object-and-collection-initializers) with key-value syntax | E.g. `Cls obj1 = new Cls { field1 = 10, field2 = "hi" };`<br/>`Cls obj2 = new Cls("hi"){ field1 = 10 };` | 3.0     |
-| [Instantiation of anonymous classes](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/anonymous-types) with key-value syntax | E.g. `var obj = new { field1 = 10, field2 = "hi" };`         | 3.0     |
+| [Immediate initialization of existing classes after construction](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/object-and-collection-initializers) with key-value syntax | E.g. `Cls obj1 = new Cls { field1 = 10, field2 = "hi" };`<br/>`Cls obj2 = new Cls("hi"){ field1 = 10 };` | 3.0     |
+| [Immediate initialization of anonymous class instances](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/object-and-collection-initializers#object-initializers-with-anonymous-types after construction) with key-value syntax | E.g. `var obj = new { field1 = 10, field2 = "hi" };`         | 3.0     |
 | [Collection expressions](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/collection-expressions) | E.g. `List<string> weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]; ` instead of `List<string> weekDays = new List<string> {...}` | 12.0    |
-| `Tuple`                                                      | A reference type version of a tuple. (See the additional notes for a reminder on what a tuple is.) | 4.0     |
+| `Tuple`                                                      | A reference type version of a tuple. (Reminder: the language-agnostic definition of *tuple* is basically "an immutable list". See below for more on this.) | 4.0     |
+| [Tuple destructuring](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/anonymous-types#tuple-deconstruction) | E.g. `(string x, int y) = outputOfSomeMethod()`.             |         |
 | `ValueTuple`s (e.g. `(int, string) x = (1, "hi");`)          | A value type version of a tuple. Note, all "tuple literals" are `ValueTuple`s, *not* `Tuple`s. (See the additional notes for a reminder on what a tuple is.) | 7.0     |
 
 ## Methods
