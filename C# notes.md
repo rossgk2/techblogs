@@ -33,7 +33,7 @@
 | [Nullish ternary operator `??`](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-coalescing-operator) |                                      | 8.0     |
 | [Non-null conditional access with `.` and `.[]`](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/member-access-operators#null-conditional-operators--and-) |                                      | 5.0     |
 
-## Intuitive collection support
+## Intuitive syntax for collections
 
 | Feature                                                      | Description, if not self-explanatory                         | Version |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------- |
