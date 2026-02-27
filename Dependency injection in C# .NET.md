@@ -4,7 +4,7 @@ I've decided to write a tutorial on how to accomplish dependency injection in C#
 
 Fortunately, C# .NET's implementation of dependency injection is pretty straightforward. In my opinion, it's way more straightforward than the implementation provided by Java's Spring Framework. If you understand the basics of the dependency injection concept but haven't yet tried it out in practice, C# .NET could be your best bet.
 
-## Prerequisite: dependence on interfaces
+## Background: dependence on interfaces
 
 Traditionally, a class instance might depend on a helper method from a helper class like this:
 
@@ -18,24 +18,24 @@ public class Controller
 		dependency = new Dependency();
 	}
 
-    /* A Controller instance controller will use the helper method whenever controller.controllerMethod() is called. */
-	public int controllerMethod()
+    /* A Controller instance controller will use the helper method whenever controller.ControllerMethod() is called. */
+	public int ControllerMethod()
 	{
-		int temp = dependency.helperMethod();
-		return someMethod(temp);
+		int temp = dependency.HelperMethod();
+		return SomeMethod(temp);
 	}
 }
 
 public class Dependency
 {
-	public int helperMethod()
+	public int HelperMethod()
     {
         /* Implementation not shown. */
     }
 }
 ```
 
-In the above,  the class`Controller` depends on a concrete type, `Dependency`. It's better practice, though, to have  it depend on an *interface*. 
+In the above, the class `Controller` depends on a concrete type, `Dependency`. It's better practice, though, to have it depend on an *interface*. Then, we are assured that `Controller` is truly only dependent on a set of behaviors and that any state-management is abstracted away.
 
 So, a slight improvement to the above is achieved by creating an `IDependency` interface, having  `Dependency` implement `IDependency`, and changing the type of the `dependency` member from `Dependency` to `IDependency`:
 
@@ -52,23 +52,23 @@ public class Controller
 	}
 
     // Same as before
-	public int controllerMethod()
+	public int ControllerMethod()
 	{
-		int temp = dependency.helperMethod();
-		return someMethod(temp);
+		int temp = dependency.HelperMethod();
+		return SomeMethod(temp);
 	}
 }
 
 // New
 public interface IDependency
 {
-    int helperMethod();
+    int HelperMethod();
 }
 
 // Changed: now implements the IDependency interface
 public class Dependency : IDependency
 {
-	public int helperMethod()
+	public int HelperMethod()
     {
         /* Implementation not shown. */
     }
@@ -124,10 +124,10 @@ public class Controller
 	}
 
     // Same as before
-	public int controllerMethod()
+	public int ControllerMethod()
 	{
-		int temp = dependency.helperMethod();
-		return someMethod(temp);
+		int temp = dependency.HelperMethod();
+		return SomeMethod(temp);
 	}
 }
 ```
@@ -139,10 +139,10 @@ There's actually a nice shorthand for this in C# version 12 and later. We can de
 public class Controller(IDependency dependency)
 {
     // Same as before
-	public int controllerMethod()
+	public int ControllerMethod()
 	{
-		int temp = dependency.helperMethod();
-		return someMethod(temp);
+		int temp = dependency.HelperMethod();
+		return SomeMethod(temp);
 	}
 }
 ```
@@ -172,7 +172,7 @@ class Program
 
 # .NET terminology
 
-.NET uses slightly different terminology for dependency injection concepts than what's used in this article. Here's how the terms in .NET map to the terms used in this article.
+C# .NET documentation uses slightly different terminology for dependency injection concepts than what's used in this article. Here's how the terms in .NET map to the terms used in this article.
 
 | Microsoft phrase     | Phrase used in this article                           |
 | -------------------- | ----------------------------------------------------- |
@@ -180,6 +180,10 @@ class Program
 | service provider     | mediator object                                       |
 | service registration | the storing of dependencies in the managing container |
 | service resolving    | the injection at runtime of a dependency              |
+
+# Dependency injection in other languages
+
+I find the way dependency injection implemented in C# to be particularly intuitive, since the patterns used strongly hint at what's going on under the hood. It's obvious that the dependency configuration is global- each interface's dependency is configured next to every other interface's dependency, all in the same file. 
 
 # References
 

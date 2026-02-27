@@ -1,26 +1,25 @@
 This article will take a relatively abstract look at the design pattern called *dependency injection* (or *inversion of control*). I feel that most articles about dependency injection get too bogged down in the particulars of whatever example is being used to demonstrate the structure. In this article, we'll present pure abstraction. 
 
-Well, maybe not *pure* abstraction- we do have to pick a particular programming language, after all! We will use Java in this article. If you don't know Java, don't worry too much. We'll stick to "basic" Java- nothing esoteric.
+Well, maybe not *pure* abstraction- we do have to pick a particular programming language, after all. We will use C# in this article.
 
 # A typical dependency situation
 
 Consider the following dependency situation, in which a class `Cls` depends both upon an interface `Intf` and on an implementation `Impl` of that interface. 
 
 ```java
-public interface Intf { void helperMethod(Object args); }
+public interface Intf { void HelperMethod(object input); }
 
-public class Impl extends Intf
+public class Impl : Intf
 {
-    @Override
-    public void helperMethod(Object args) { /* implementation */ }
+    public void HelperMethod(object input) { /* implementation */ }
 }
 
 public class Cls
 {
-    public void method(Object args)
+    public void Method(object input)
     {
         Intf intf = new Impl();
-        intf.helperMethod(args);
+        intf.HelperMethod(input);
     }
 }
 ```
@@ -35,113 +34,226 @@ Impl --is--> Intf
 
 We want to be in a dependency situation in which `Cls` depends only on `Intf` and not on `Impl`. I.e., we want to *decouple* the implementation of `Cls` from any particular implementation of `Intf`. As described in some [Microsoft documentation](https://docs.microsoft.com/en-us/dotnet/core/extensions/dependency-injection), this decoupling is desired because:
 
-1. It allows us to change which implementation of `Intf` is used by `Cls` without modifying code* in the body of `Cls`.
+1. It allows us to change which implementation of `Intf` is used by `Cls` without modifying code in the body of `Cls`.
    - Having an easy way to swap one implementation out for another makes it easy to swap in a [mocked](https://blogs.perficient.com/2021/09/22/mocking-in-test-driven-development-tdd-with-javas-easymock/) implementation, which lends itself to test-driven development.
-2. It removes the need for manual configuration of `Impl`'s dependencies.
-
-\* If you're using Spring Framework for Java, then you change the injected implementation by changing an annotation within the body of `Cls`. I don't count this as changing "actual code" in the body of `Cls`! Admittedly, it *would* be better if changing the interface implementation didn't touch *anything* inside `Cls`, so that the configuration code (the code specifying which interface is to be injected) is completely separate from the implementation code. C# .NET's way of doing dependency injection is better about sticking to this rule.
+2. It delegates the responsibility of initializing `Cls`'s dependencies away from `Cls` itself.
+   - When `Cls` doesn't engage in the rather individualistic practice of initializing its own dependencies, it is possible for a centralized manager to efficiently allocate dependency instances between  `Cls` and any other objects that require the same dependencies.
 
 # A better dependency situation
 
-To improve our dependency situation, we will pass the responsibility of creating `Impl` to some `Container` class that manages `Cls`. When commanded to do so, `Container` will "inject" a `new`ly created `Impl` instance into `Cls`. One way to perform this "injection", *constructor injection*, is to pass an `Impl` instance to a constructor of `Cls` that accepts an `Impl`. (Of course, `Cls` must have a public with-arguments constructor for constructor injection to be possible). There are other forms of dependency injection, such as *setter injection* and *field injection*. (In Java, field injection is predicated on [abusing reflection techniques](https://stackoverflow.com/a/53744544) to modify `private` fields).
+To improve our dependency situation, we will pass the responsibility of creating dependencies (such as `Impl`) to a sort of central manager object. This object will be responsible for not only creating, but also managing, *all* of the dependencies of *all* objects in our program. It will do so by "injecting" the appropriate dependency instances into the constructors of the objects instances being initialized.
 
- This setup is called *dependency* *injection.* Implementing dependency injection places us in the following much improved dependency situation:
+When this so-called *dependency injection* pattern is used, we will be in the following much improved dependency situation:
 
 ```
 Cls --has--> Intf
 Container --has--> Cls
-Container --has--> Intf
 Container --creates--> Impl
-Impl --is--> `Intf
+Impl --is--> Intf
 ```
 
-Now, `Cls` depends only on `Intf` and not on `Impl`, as desired.
+Here, `Cls` depends only on `Intf` and not on `Impl`, as desired.
 
-In addition to solving the decoupling problem, dependency injection comes with the extravagant benefit of allowing for the "injection" of a single interface implementation into different classes that depend on the same interface type, when doing so makes sense. In other words, our new dependency situation also allows for the sharing of one `Intf` instance between class instances.
+## Exposing a constructor
 
-## Summary
+In order for the injection of the dependency `Intf` into `Cls` to be possible, we need to add a field of type `Intf` to `Cls`, and a constructor initializing it, so that there is a way for the manager object to pass an instance of  `Intf` type to `Cls`:
 
-To summarize, here are the two main benefits of dependency injection:
+```c#
+public class Cls
+{	
+	// New
+	private Intf intf;
+    public Cls(Intf intf)
+    {
+    	this.intf = intf;
+    }
+    
+    // Same as before
+    public void Method(object input)
+    {
+        Intf intf = new Impl();
+        intf.HelperMethod(input);
+    }
+}
+```
 
-1. Dependency injection decouples the implementations of classes from the implementations of those classes' dependencies. Decoupling of interfaces from implementations is desirable because...
+There's actually a nice shorthand for this in C# version 12 and later. We can define an implicit and primary[^1] constructor as follows:
 
-   1.1. It allows us to change which implementation of an interface is used by a dependent class without modifying code in the body of the class.
+```c#
+// Changed: now using implicit constructor syntax
+public class Cls(Intf intf)
+{
+    // Same as before
+	public void Method(object input)
+    {
+        Intf intf = new Impl();
+        intf.HelperMethod(input);
+    }
+}
+```
 
-   - Having an easy way to swap one implementation out for another makes it easy to swap in a [mocked](https://blogs.perficient.com/2021/09/22/mocking-in-test-driven-development-tdd-with-javas-easymock/) implementation, which lends itself to test-driven development.
+[^1]: A constructor is *primary* if and only if every other constructor must invoke it at the start. In C#, all implicit constructors- like the above- are also primary.
 
-   1.2. It removes the need for manual configuration of an injected implementation's dependencies.
+## The central manager object
 
-2. Dependency injection allows us to share a single interface implementation instance between multiple classes that depend on said interface, when applicable.
+Once `Cls` has a constructor that can receive an instance of `Intf` type that's "injected" into it, we are ready to work with the central manager object responsible for performing these kinds of injections. In C#, the central manager object is a `ServiceProvider` instance. This name makes sense when you know that, in the C# .NET world, "dependencies" are often called "services"- a `ServiceProvider` "provides", or "injects", services (dependencies) into class instances by means of class constructors.
+
+To get ahold of a `ServiceProvider`, we first have to specify the associations between the *dependency types* that appear in constructors and the *implementation types* that get injected into them. It *would* make sense if we told it that information by doing something like this:
+
+```c#
+using Microsoft.Extensions.DependencyInjection;
+    
+class Program
+{
+	static void Main(string[] args)
+    {
+        // Specify the associations between dependency types and implementation types.
+    	IServiceCollection services = new ServiceCollection();
+        services.AddAssociation<Intf, Impl>();
+        services.AddAssociation<Cls, Cls>();
+		
+        // Build a manager that is aware of the associations.
+        ServiceProvider manager = services.BuildServiceProvider();
+        
+        // Use the manager to get a Cls instance that has all dependencies injected into it.
+        Cls cls = manager.GetRequiredService<Cls>();
+        
+        // Now we can call a method on the Cls instance that makes use of a dependency!
+        cls.Method();
+	}
+}      
+```
+
+But... the method `IServiceCollection.AddAssociation<TIntf, Timpl>()` doesn't actually exist! I've just included it here for explanatory purposes. Instead of `IServiceCollection.AddAssociation<TIntf, TImpl>()`, we have to use one of the following:
+
+* `IServiceCollection.AddTransient<TIntf, TImpl>()`
+* `IServiceCollection.AddSingleton<TIntf, TImpl>()`
+* `IServiceCollection.AddScoped<TIntf, TImpl>()`
+
+So, actually valid code would be:
+
+```c#
+using Microsoft.Extensions.DependencyInjection;
+    
+class Program
+{
+	static void Main(string[] args)
+    {
+        // Specify the associations between dependency types and implementation types.
+        // (Use AddTransient<,>() instead of the fake but more intuitive-sounding AddAssociation<,>()
+        // from above.)
+    	IServiceCollection services = new ServiceCollection();
+        services.AddTransient<Intf, Impl>();
+        services.AddTransient<Cls, Cls>();
+		
+        // Build a manager that is aware of the associations.
+        ServiceProvider manager = services.BuildServiceProvider();
+        
+        // Use the manager to get a Cls instance that has all dependencies injected into it.
+        Cls cls = manager.GetRequiredService<Cls>();
+        
+        // Now we can call a method on the Cls instance that makes use of a dependency!
+        cls.Method();
+	}
+}      
+```
+
+If you're just learning about dependency injection for the first time, I wouldn't recommend worrying over these variants too much. Just use `AddTransient<,>()` for everything and pretend it says `AddAssociation<,>()`. 
+
+## Service lifetimes
+
+Each of these method variants don't just inform the manager object (or, more accurately in this C# implementation, the manager-object-to-be) of a dependency-implementation association. Each variant specifies a different "service lifetime" for the dependency in the association that is to be enforced by the manager object. We can think of these methods as corresponding to some helpful pseudocode:
+
+| Actual method in C#            | Pseudocode                                                   |
+| ------------------------------ | ------------------------------------------------------------ |
+| `AddTransient<TIntf, TImpl>()` | `AddAssociation<TIntf, TImpl>(serviceLifetime: "transient")` |
+| `AddSingleton<TIntf, TImpl>()` | `AddAssociation<TIntf, TImpl>(serviceLifetime: "singleton")` |
+| `AddScoped<TIntf, TImpl>()`    | `AddAssociation<TIntf, TImpl>(serviceLifetime: "scoped")`    |
+
+[TO-DO]
+
+# Miscellaneous notes
 
 ## Inversion of control
 
-Since, in dependency injection, `Container`, rather than `Cls`, controls what and when `Cls`'s dependencies are injected, control has in some sense been inverted. Dependency injection is thus an example of *inversion of control.* For this reason, a class such as `Container` is often referred to as the *inversion of control container*, or *IoC container*.
+Since, in dependency injection, `ServiceProvider`, rather than `Cls`, controls what and when `Cls`'s dependencies are injected, control has in some sense been inverted. Dependency injection is thus an example of *inversion of control.* For this reason, a class such as `Container` is often referred to as the *inversion of control container*, or *IoC container*.
 
 Note that while dependency injection is an example of inversion of control, not all inversion of control is dependency injection. [This article](https://martinfowler.com/bliki/InversionOfControl.html) by Martin Fowler details other examples of inversion of control.
 
-# Code
+## C# .NET terminology
 
-Here's code that implements the dependency injection pattern. (The following is basically an abstract extrapolation of code given in [Martin Fowler's article](https://martinfowler.com/articles/injection.html) on dependency injection).
+.NET uses slightly different terminology for dependency injection concepts than the "dependency" terminology I've favored in this article. Here's the translations: 
+
+| Microsoft phrase     | Phrase used in this article                             |
+| -------------------- | ------------------------------------------------------- |
+| service              | dependency                                              |
+| service provider     | manager object                                          |
+| service registration | the specification of dependencies to the manager object |
+| service resolving    | the injection at runtime of a dependency                |
+
+## Dependency injection without constructors
+
+Using class constructors is to pass an initialized dependency to a class is called *constructor injection*. In my opinion, it is the most intuitive way to do dependency injection, and superior to all the alternatives... but alternatives do exist. There's *setter injection*, which uses setter methods to pass dependencies, and *field injection*, which [abuses reflection techniques](https://stackoverflow.com/a/53744544) to modify `private` fields from outside the class in which they are declared.
+
+## Dependency injection in other languages
+
+### Java and the Spring Framework
+
+Java does not have native support for dependency injection like C# does. Nevertheless, large enterprise projects written in Java that use dependency injection exist and support many important applications. Most of these projects use the Spring Framework for Java, a third party framework that provides dependency injection capability.
+
+Associations between dependency types and implementation types are specified a little differently in the modern version of the Spring Framework. Spring makes use of Java annotations to specify dependency configurations, rather than explicit method calls like was the case like in C#. 
+
+In Java Spring Framework, the analog to the C# .NET `Main()` method filled with `AddTransient<TIntf, TImpl>()` calls is a class annotated with `@Configuration`, like this:
 
 ```java
-public interface Intf { void helperMethod(Object args); }
-
-public class Impl extends Intf
+@Configuration
+public class AppConfig
 {
-    private Object args;
-    public Impl(Object args) { this.args = args; }
+    // In Java Spring, "bean" means "dependency". Thus, anything annotated with @Bean is interpreted
+    // by the manager object to be a dependency.
+	@Bean
+	public Intf1 intf1Builder()
+    {
+		return new Impl1();
+	}
 
-    @Override
-    public void helperMethod() { /* implementation that uses this.args */ }
+	@Bean
+	public Intf2 intf2Builder()
+    {
+		return new Impl2();
+	}
 }
+```
 
+Although, the more popular approach in Java Spring is to specify each dependency-implementation association locally, *per-dependency* (i.e. per interface), like this:
+
+```java
+// "Component" also means "dependency" in Java Spring.
+@Component
+public class Impl extends Intf { }
+```
+
+Essentially, any class `Impl` extending an interface `Intf` that is annotated with `@Component` is assumed to associate the dependency type of `Intf` with the implementation type of `Impl`.
+
+Lastly, in the Spring Framework, one has to annotate the constructor with `@Autowired` if the manager object is to actually go ahead and perform constructor injection. 
+
+```java
 public class Cls
-{
-    private Intf intf;
-    public Cls(Intf intf) { this.intf = intf; }
-
-    public void method() { intf.helperMethod(); }
-}
-
-public class Container{ /* implementation will be kind of complicated */ }
-   
-public class Main
-{
-    /* A config file typically performs performs the task of this method. */
-    private Container configureContainer()
+{	
+	private Intf intf;
+    
+    @Autowired
+    public Cls(Intf intf)
     {
-       Object args = ... // get the arguments that should be passed to the Impl constructor
-       Container cntr = new Container();
-       
-       /* The below line tells cntr all the information it needs to execute the statement
-       "Intf intf = Impl(args)". */
-       cntr.registerComponentImplementation(Intf.class, Impl.class, args);
-       
-       /* This next line tells cntr all the information it needs to execute the statement
-       "Cls cls = new Cls(intf)". */
-       cntr.registerComponentImplementation(Cls.class);
-       return cntr;
+    	this.intf = intf;
     }
-   
-    public static void main(String[] _args)
+    
+    public void Method(object input)
     {
-       /* This is how we call cls.method(). */
-       Container cntr = configureContainer();
-       Cls cls = (Cls) cntr.getComponentInstance(Cls.class);
-       cls.method(); // This executes the same task as "cls.method(args)" did in the original situation.
+        Intf intf = new Impl();
+        intf.HelperMethod(input);
     }
 }
 ```
 
-## Extra: did we give `Container` unnecessary information?
-
-One particular about the lines involving `cntr.registerComponentImplementation()` wasn't immediately clear to me, and might be confusing to you, too. My question was: is it necessary to pass `Intf.class` to the first call of `registerComponentImplementation()`? It seems that there should exist an implementation of `Container` such that if we execute the following, `cntr` does what we would expect behind the scenes.
-
-```java
-cntr.registerComponentImplementation(Impl.class, args);
-cntr.registerComponentImplementation(Cls.class);
-```
-
-That is, it seems that `cntr` would have enough information to do `new Cls(new Impl(args))`. This is because `cntr` has a `Cls`, and `Cls` knows that `Impl` is an `Intf`. And, for the sake of argument, even if we assume that `cntr` somehow *didn't* know about this through `Cls`, the JVM itself knows that `Impl` is an `Intf`- after all, executing `new Cls(new Impl(args))` doesn't require that we type cast `new Impl(args)` to `Intf`!
-
-**Answer:** upon investigation, I found that it is just convention to pass more information than is strictly necessary in certain dependency injection frameworks.
+The name `@Autowired` was likely chosen for this purpose because sometimes, instead of talking of "injecting" dependencies, people speak of "wiring up" dependencies. Both phrases mean the exact same thing; it's a shame, in my opinion, that something more intuitive like `@Injected` wasn't used instead.
