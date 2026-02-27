@@ -7,7 +7,7 @@ At the end of the article, we discuss how dependency injection is done in Java- 
 Consider the following dependency situation, in which a class `Cls` depends both upon an interface `Intf` and on an implementation `Impl` of that interface. 
 
 ```java
-public interface Intf { void HelperMethod(object input); }
+public interface Intf { public void HelperMethod(object input); }
 
 public class Impl : Intf
 {
@@ -105,7 +105,7 @@ using Microsoft.Extensions.DependencyInjection;
     
 class Program
 {
-	static void Main(string[] args)
+	public static void Main(string[] args)
     {
         // Specify the associations between dependency types and implementation types.
     	IServiceCollection services = new ServiceCollection();
@@ -137,7 +137,7 @@ using Microsoft.Extensions.DependencyInjection;
     
 class Program
 {
-	static void Main(string[] args)
+	public static void Main(string[] args)
     {
         // Specify the associations between dependency types and implementation types.
         // (Use AddTransient<,>() instead of the fake but more intuitive-sounding AddAssociation<,>()
