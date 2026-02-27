@@ -1,6 +1,6 @@
-This article will take a relatively abstract look at the design pattern called *dependency injection* (or *inversion of control*). I feel that most articles about dependency injection get too bogged down in the particulars of whatever example is being used to demonstrate the structure. In this article, we'll present pure abstraction. 
+This article explores the design pattern called *dependency injection*. The pattern is explored from a relatively language-agnostic point of view in C#, since C#'s implementation of the pattern preserves the general principles of the pattern best.
 
-Well, maybe not *pure* abstraction- we do have to pick a particular programming language, after all. We will use C# in this article.
+At the end of the article, we discuss how dependency injection is done in Java- it's quite confusing if you haven't seen the C# way first!
 
 # A typical dependency situation
 
@@ -160,9 +160,28 @@ class Program
 
 If you're just learning about dependency injection for the first time, I wouldn't recommend worrying over these variants too much. Just use `AddTransient<,>()` for everything and pretend it says `AddAssociation<,>()`. 
 
+# Miscellaneous notes
+
+## C# .NET terminology
+
+I've explained *some* of the terminology for dependency injection used in the C# .NET world. Here's the complete set of translations to the general "dependency" terminology I've favored in this article.
+
+| C# .NET terminology  | General terminology                                     |
+| -------------------- | ------------------------------------------------------- |
+| service              | dependency                                              |
+| service provider     | manager object                                          |
+| service registration | the specification of dependencies to the manager object |
+| service resolving    | the injection at runtime of a dependency                |
+
 ## Service lifetimes
 
-Each of these method variants don't just inform the manager object (or, more accurately in this C# implementation, the manager-object-to-be) of a dependency-implementation association. Each variant specifies a different "service lifetime" for the dependency in the association that is to be enforced by the manager object. We can think of these methods as corresponding to some helpful pseudocode:
+Here's an explanation of the method variants from earlier: 
+
+- `IServiceCollection.AddTransient<TIntf, TImpl>()`
+- `IServiceCollection.AddSingleton<TIntf, TImpl>()`
+- `IServiceCollection.AddScoped<TIntf, TImpl>()`
+
+In addition to specifying a dependency-implementation association, each variant specifies a different "service lifetime" for the dependency in the association, that is to be enforced by the manager object. We can think of these methods as corresponding to some helpful pseudocode:
 
 | Actual method in C#            | Pseudocode                                                   |
 | ------------------------------ | ------------------------------------------------------------ |
@@ -170,26 +189,17 @@ Each of these method variants don't just inform the manager object (or, more acc
 | `AddSingleton<TIntf, TImpl>()` | `AddAssociation<TIntf, TImpl>(serviceLifetime: "singleton")` |
 | `AddScoped<TIntf, TImpl>()`    | `AddAssociation<TIntf, TImpl>(serviceLifetime: "scoped")`    |
 
-[TO-DO]
+A dependency with *transient* service lifetime is created anew every time it is requested from the managing container; each instance of a transient dependency is used independently of all other instances.
 
-# Miscellaneous notes
+A dependency with *singleton* service lifetime is created once, the first time it is requested from the managing container, and shared among all objects that use it.
+
+Dependencies with *scoped* service lifetime a little more complicated, so we don't cover them in this introduction.
 
 ## Inversion of control
 
-Since, in dependency injection, `ServiceProvider`, rather than `Cls`, controls what and when `Cls`'s dependencies are injected, control has in some sense been inverted. Dependency injection is thus an example of *inversion of control.* For this reason, a class such as `Container` is often referred to as the *inversion of control container*, or *IoC container*.
+Control is in some sense inverted in dependency injection. Instead of `Cls` controlling it's *own* dependencies, the manager object does. Manager objects are sometimes called *inversion of control (IoC) containers* for this reason.
 
-Note that while dependency injection is an example of inversion of control, not all inversion of control is dependency injection. [This article](https://martinfowler.com/bliki/InversionOfControl.html) by Martin Fowler details other examples of inversion of control.
-
-## C# .NET terminology
-
-.NET uses slightly different terminology for dependency injection concepts than the "dependency" terminology I've favored in this article. Here's the translations: 
-
-| Microsoft phrase     | Phrase used in this article                             |
-| -------------------- | ------------------------------------------------------- |
-| service              | dependency                                              |
-| service provider     | manager object                                          |
-| service registration | the specification of dependencies to the manager object |
-| service resolving    | the injection at runtime of a dependency                |
+Note: while dependency injection is an example of inversion of control, not all inversion of control is dependency injection. [This article](https://martinfowler.com/bliki/InversionOfControl.html) by Martin Fowler details other examples of inversion of control.
 
 ## Dependency injection without constructors
 
@@ -257,3 +267,7 @@ public class Cls
 ```
 
 The name `@Autowired` was likely chosen for this purpose because sometimes, instead of talking of "injecting" dependencies, people speak of "wiring up" dependencies. Both phrases mean the exact same thing; it's a shame, in my opinion, that something more intuitive like `@Injected` wasn't used instead.
+
+### Angular
+
+Angular, the web application frontend framework, uses an annotation-based approach to dependency injection similar to that of Java Spring Framework that is arguably much more intuitive.
