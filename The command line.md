@@ -1,8 +1,6 @@
 # Background
 
-The first successful mass-market personal computer was the Apple II, and was released in 1975. It would be nine years until the first computer to provide the user a graphical user interface, the Apple Macintosh, was released in 1984. (And it was four more years until Microsoft released its first widely successful GUI-based OS, Windows 3.0.)
-
-Before the time of graphical user interfaces, computer users would write and execute text commands in what is known as a *command line interface*, *command line*, *terminal*, or *shell*.
+It may be difficult to comprehend a time before mouses and cursors came around to make interacting with computers more user-friendly, but yes, it actually happened. The first computer popularizing use of the mouse and keyboard, the Apple II, only came out in 1977. In the preceding nine or so years before, when personal computers were making their way into the market, users primarily interacted with computers by using a text-based interface known as a *command line interface*, *command line*, *terminal*, or *shell*.
 
 The command line is still alive and well today (for programmers, at least) because basic command line knowledge is necessary to compile and test programs in essential programming languages like C, C++, C#, Java, and Python[^1].
 
@@ -12,13 +10,13 @@ This article gives an overview of the shells in use today.
 
 # Shells by OS
 
-Modern shells can be roughly grouped into three categories:
+There are three categories of shells surviving today:
 
-* Unix shells
-* Windows shells that are pre-PowerShell
-* Windows PowerShell
+* Unix (MacOS/Linux)
+* Microsoft pre-PowerShell
+* PowerShell
 
-Shells within the same category use similar syntax, and shells in different categories use differing syntax.
+Each category has its own distinct command language syntax.
 
 ## Unix (MacOS/Linux)
 
@@ -28,7 +26,7 @@ Shells within the same category use similar syntax, and shells in different cate
 | bash ("Bourne again shell") | Successor to sh and most popular shell today | Mostly C         |
 | zsh ("Z shell")             | Default shell in newer MacOS versions        | C                |
 
-## Windows pre-PowerShell shells
+## Microsoft pre-PowerShell
 
 | Shell name | Notes                                                        | Implemented with |
 | ---------- | ------------------------------------------------------------ | ---------------- |
@@ -43,7 +41,7 @@ Shells within the same category use similar syntax, and shells in different cate
 
 # Structure of a shell command
 
-All shell commands generally have ways of accepting the following kinds of input:
+All shell commands, no matter what category they come from, generally have ways of accepting the following kinds of input:
 
 * named arguments that accept input
 * named arguments that don't accept input ("flags")
@@ -115,7 +113,7 @@ The essentials of a Unix-style shell command are as follows:
 
 [^4]: One can have either (a) Unix-style short form argument combination or (b) use the same symbol for long-form and short-form named arguments, but it's impossible to have both without introducing ambiguity.
 
-### Real world inconsistency
+### An example of conventions being violated
 
 Remember that any command in any shell can define any syntax it wants. It is very possible to encounter commands on a Unix system that conform to non-Unix standards.
 
@@ -226,7 +224,6 @@ cd "/home/Bob/Desktop/fldr"
 ```
 
 This command would work no matter what your working directory is.
-
 
 
 
