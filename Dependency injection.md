@@ -92,7 +92,7 @@ public class Cls(Intf intf)
 }
 ```
 
-[^1]: A constructor is *primary* if and only if every other constructor must invoke it at the start. In C#, all implicit constructors- like the above- are also primary.
+[^1]: A constructor is *primary* if and only if every other constructor must invoke it at the start. In C#, all implicit constructors are also automatically primary.
 
 ## The central manager object
 
