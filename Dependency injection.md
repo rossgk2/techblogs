@@ -32,7 +32,7 @@ Cls --has--> Intf
 Impl --is--> Intf
 ```
 
-We want to be in a dependency situation in which `Cls` depends only on `Intf` and not on `Impl`. I.e., we want to *decouple* the implementation of `Cls` from any particular implementation of `Intf`. As described in some [Microsoft documentation](https://docs.microsoft.com/en-us/dotnet/core/extensions/dependency-injection), this decoupling is desired because:
+We want to be in a dependency situation in which `Cls` depends only on `Intf` and not on `Impl`. I.e., we want to *decouple* the implementation of `Cls` from any particular implementation of `Intf`. This decoupling is desired because:
 
 1. It allows us to change which implementation of `Intf` is used by `Cls` without modifying code in the body of `Cls`.
    - Having an easy way to swap one implementation out for another makes it easy to swap in a [mocked](https://blogs.perficient.com/2021/09/22/mocking-in-test-driven-development-tdd-with-javas-easymock/) implementation, which lends itself to test-driven development.
@@ -92,7 +92,7 @@ public class Cls(Intf intf)
 }
 ```
 
-[^1]: A constructor is *primary* if and only if every other constructor must invoke it at the start. In C#, all implicit constructors- like the above- are also primary.
+[^1]: A constructor is *primary* if and only if every other constructor must invoke it at the start. In C#, all implicit constructors are also automatically primary.
 
 ## The central manager object
 
