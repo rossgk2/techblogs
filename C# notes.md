@@ -14,31 +14,35 @@
 
 | Feature                                                      | Description, if not self-explanatory                         | Version |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------- |
-| Inline constructors                                          | E.g. `public class Cls(string field1, int field2)`)          | 12      |
-| Implicit constructors-with-parameters for `class`es          | In C#, all implicit constructors-with-parameters are primary. | 12      |
-| [Extension methods](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods) | Extension methods are instance methods that can't access `private` or `protected` members defined outside of an already-defined type. They are implemented as syntactic sugar for `static` methods that take the already-defined type as argument | 3.0     |
-| `record class` (or `record`) and `record struct`             | Immutable types with field-based equality. `record class` defines a reference type and `record struct` defines a value type. | 9       |
+| Implicit constructors-with-parameters for `class`es          | E.g. `public class Cls(string field1, int field2)`.<br />In C#, all implicit constructors-with-parameters are primary. | 12      |
+| `record class` (or `record`) and `record struct`             | Immutable types with field-based equality. `record class` defines a reference type and `record struct` defines a value type. |         |
 | Implicit constructors-with-parameters for `record`s          | In C#, all implicit constructors-with-parameters are primary. <br />On a record, defining an implicit constructor-with-parameters is equivalent to defining one `get; init;` property for each parameter. | 9       |
+| [Extension methods](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods) | Extension methods are instance methods that can't access `private` or `protected` members defined outside of an already-defined type. They are implemented as syntactic sugar for `static` methods that take the already-defined type as argument | 3.0     |
 
-## Using types
+## General type features
 
-| Feature                                                      | Description, if not self-explanatory | Version |
-| ------------------------------------------------------------ | ------------------------------------ | ------- |
-| Type-parameters (generics)                                   |                                      | 2.0     |
-| Implicitly typed variables with `var`                        |                                      | 3.0     |
-| Dynamically typed variables with `dynamic`                   | E.g. `dynamic x = 1; x = "hi";`      | 4.0     |
-| [Make value types (`int`, `bool`, `struct`) reference types with `ref`](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/declarations#reference-variables) |                                      | 7.0     |
-| Nullable value types via `?`                                 |                                      | 2.0     |
-| Nullable reference types via `?`                             |                                      | 8.0     |
-| [Nullish ternary operator `??`](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-coalescing-operator) |                                      | 8.0     |
-| [Non-null conditional access with `.` and `.[]`](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/member-access-operators#null-conditional-operators--and-) |                                      | 5.0     |
+| Feature                                                      | Description, if not self-explanatory                         | Version |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------- |
+| Type-parameters (generics)                                   |                                                              | 2.0     |
+| Implicitly typed variables with `var`                        |                                                              | 3.0     |
+| Dynamically typed variables with `dynamic`                   | E.g. `dynamic x = 1; x = "hi";`                              | 4.0     |
+| [Make value types (`int`, `bool`, `struct`) reference types with `ref`](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/declarations#reference-variables) |                                                              | 7.0     |
+| Nullable value types via `?`                                 | `e.g. int? x = 5;` is equivalent to `Nullable<int> x = 5`    | 2.0     |
+| Nullable reference types via `?`                             | `e.g. T? x = new T()`                                        | 8.0     |
+| Non-null conditional access operators, `.` and `.[]`         | `x?.y` returns `x.y` if `x` is not null and `null` otherwise. The operator `.[]`, used for collections, is similar. | 5.0     |
+| The nullish ternary operator, `??`                           | `x ?? y` returns `x` if `x` is not null, and returns `y` otherwise. | 8.0     |
 
-## Intuitive syntax for collections
+## Strong-type type features
 
 | Feature                                                      | Description, if not self-explanatory                         | Version |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------- |
 | [Immediate initialization of existing classes after construction](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/object-and-collection-initializers) with key-value syntax | E.g. `Cls obj1 = new Cls { field1 = 10, field2 = "hi" };`<br/>`Cls obj2 = new Cls("hi"){ field1 = 10 };` | 3.0     |
 | [Immediate initialization of anonymous class instances](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/object-and-collection-initializers#object-initializers-with-anonymous-types after construction) with key-value syntax | E.g. `var obj = new { field1 = 10, field2 = "hi" };`         | 3.0     |
+
+## Intuitive syntax for collections
+
+| Feature                                                      | Description, if not self-explanatory                         | Version |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------- |
 | [Collection expressions](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/collection-expressions) | E.g. `List<string> weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]; ` instead of `List<string> weekDays = new List<string> {...}` | 12.0    |
 | `Tuple`                                                      | A reference type version of a tuple. (Reminder: the language-agnostic definition of *tuple* is basically "an immutable list". See below for more on this.) | 4.0     |
 | [Tuple destructuring](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/anonymous-types#tuple-deconstruction) | E.g. `(string x, int y) = outputOfSomeMethod()`.             |         |
@@ -97,6 +101,12 @@ IEnumerable<int> highScoresQuery = scores
     .Where(score => score > 80)
     .OrderByDescending(score => score);
 ```
+
+### On list comprehension
+
+One thing I really like about Python is the "list comprehension" syntax `[f(x) for x in collection]`. Of course, this is equivalent to the Python expression `map(f, collection)`.
+
+There is no C# equivalent of the former syntax, but there is for the latter: `collection.Select(x => f(x))`.
 
 ## Examples of key-value support
 
