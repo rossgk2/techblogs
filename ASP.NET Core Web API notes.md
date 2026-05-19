@@ -32,20 +32,18 @@ In modern ASP.NET, there is a single framework- ASP.NET Core, or "Core". The dif
 
 Confusingly, "ASP.NET Core Web API" and "ASP.NET Core Web App" both depend heavily on Microsoft.AspNetCore.Mvc, which is can be misinterpreted as being evocative of the legacy framework "ASP.NET MVC".
 
-## Controllers
+## Controllers and action methods
 
-### Controllers in ASP.NET Core Web API
+In ASP.NET Core Web API, groupings of related API endpoints corresponds to a *controller class*- a class inheriting from `ControllerBase`- that defines how HTTP requests to those API endpoints are to be handled. Make sure not to confuse `ControllerBase` with the closely-related `Controller` class, which adds view support and is most commonly in ASP.NET Core Web App.
 
-In ASP.NET Core Web API, every API endpoint corresponds to a *controller class*- a class inheriting from `ControllerBase`- that defines how HTTP requests to that API endpoint are to be handled. 
-
-Specifically, handlers for the different verbs (GET, PUT, POST, PUT, DELETE, PATCH) that can be issued to that API endpoint are defined as methods of the controller class. Such methods are called *action methods*.
+Specifically, handlers for the different verbs (GET, PUT, POST, DELETE, PATCH) that can be issued to that API endpoint are defined as methods of the controller class. Such methods are called *action methods*.
 
 We describe how a HTTP request sent to an API endpoint is matched to a controller action. There are two steps to this process:
 
 1. Determining the controller corresponding to the API endpoint
-2. Determining the action corresponding to the HTTP verb
+2. Determining the action method corresponding to the HTTP verb
 
-#### Conventional routing
+### Conventional routing
 
 In the olden days, before the `[Route]` attribute existed, the following *global* configuration code associating URLs with controller actions was placed in `Program.cs`, the entry-point file:
 
@@ -58,12 +56,12 @@ app.UseEndpoints(endpoints =>
 });
 ```
 
-This code causes a URL such as "/Clients/Info" to be handled by the action method named `Info` in the controller called `ClientsController`:
+This code causes a URL such as "/resource/info" to be handled by the action method named `Info` in the controller called `ResourceController`:
 
 ```c#
-public IActionResult Info()
+public ActionResult Info()
 {
-    return Ok("Info action called");
+    return Ok("Info action called"); // Ok is of type ActionResult
 }
 ```
 
@@ -78,68 +76,57 @@ app.UseEndpoints(endpoints =>
 });
 ```
 
-#### Attribute-based routing
+### Attribute-based routing
 
-##### 1. Determining the controller
+#### 1. Determining the controller
 
-Modern code uses C#'s decorator syntax- attributes- to decentralize the configuration code. The association of URLs with controllers no longer happens all in one place; instead, it is done on a per-controller, by annotating the controller:
+Modern code uses C#'s decorator syntax- attributes- to decentralize the configuration code. The association of URLs with controllers no longer happens all in one place; instead, it is done on a per-controller, by annotating the controller with the `[Route]` attribute:
 
 ```c#
 [Route("[controller]")]
-public class ClientsController : ControllerBase { ... }
+public class ResourceController : ControllerBase { ... }
 ```
 
-The `"[controller]"`  argument to the `Route` attribute indicates that the name of the decorated controller, minus "Controller", prepended with a "/", and put into lowercase, is the URL to be associated with `ClientsController`. That is, since `[Route("[controller]")]` decorates `ClientsController`, then "/clients" is the URL handled by `ClientsController`.
+The `"[controller]"`  argument to the `Route` attribute indicates that the case-insensitive name of the decorated controller, minus "Controller" and prepended with a "/", is the URL to be associated with `ResourceController`. That is, since `[Route("[controller]")]` decorates `ResourceController`, then "/resource" is the URL handled by `ResourceController`.
 
-##### 2. Determining the action method
+#### 2. Determining the action method
 
 In the old approach, determination of the action method relies a lot upon enforcing naming conventions on method names. That is much less so the case in the attribute-based approach. Similarly to as with the controller, the action is annotated with the HTTP verb to be matched. 
 
 ```c#
-[HttpGet]
-public IActionResult Get()
+[HttpGet("info")]
+public ActionResult Get()
 {
     return Ok("Info action called");
 }
 ```
 
-A HTTP is matched to an action with the following algorithm:
+A HTTP request is matched to an action with the following algorithm:
 
 1. Filter all actions so that the actions under consideration are the ones with routes (formally called "route templates") that match the request's URL path.
 2. If there exists a matching action with whose HTTP verb attribute (e.g. `[HttpGet]`) matches that of the request, use one of those actions.
-3. Otherwise, use conventional routing to match the HTTP request to an action method that participates in conventional routing (i.e. that doesn't have an HTTP verb attribute).
+3. Of those actions, filter further, so that only the actions having inputs compatible with the inputs sent in the HTTP request are considered.
+4. Choose one of these actions[^1].
 
-### Controllers in ASP.NET Core Web App
-
-Controllers in ASP.NET Core Web App inherit `Controller`. (Recall that controllers in ASP.NET Core Web API inherit `ControllerBase`.)
-
-### More on controllers in ASP.NET Core Web API
-
-Controllers in ASP.NET Core Web API (classes that inherit from `ControllerBase`) have basic functionality for building API controllers, like automatic model binding.
-
-When a controller is additionally annotated with `[ApiController]`, its methods now *must* be annotated with a HTTP verb attribute (like `[HttpGet]` or `[HttpPost]`).
+[^1]: I'm intentionally not specifying how to uniquely specify one of "those actions" because things should never be this ambiguous in best practice.
 
 ## Requests
 
-As one would expect, the types of the inputs in a controller action method correspond to the kinds of the inputs can be passed in a HTTP request that's sent to the corresponding API endpoint.
+As one would expect, the kinds of the inputs can be passed in a HTTP request that's sent to an API endpoint correspond to the the types of the inputs in the corresponding controller action method. Here we describe exactly how to define those types.
 
-### Scalar input and output
+### Representing dictionary inputs
 
-To represent scalar inputs (strings, numbers, or booleans), simply use a primitive type like `string`, `int`, `double`, or `bool`. An example of an action method corresponding to a POST endpoint that accepts a `string` input is
+There are two ways for an API caller to pass a dictionary in an API request. They can represent the dictionary by sending...
 
-```c#
-[HttpPost("resource")]
-public async Task<ActionResult<OuterWrapper>> Post(string input)
-{
-    return await clientsService.GetResult();
-}
-```
+* a HTTP request with a JSON payload representing the dictionary[^2]
+* a HTTP request with a `urlencoded` payload representing the dictionary[^3]
 
-### JSON input and output
+[^2]: A HTTP request with a `Content-Type` header of `application/json` and a request body containing a JSON-formatted string that represents the dictionary.
+[^3]: A HTTP request with a `Content-Type` header of `application/x-www-form-urlencoded` and a request body containing the result of specifying the key-value pairs from the dictionary in a string that looks like `"key1=value1&key2=value2&key3=value3"`.
 
-To represent JSON input in particular, it's most common to use a complex type. For example, suppose that the API endpoint POST /api/resource receives an HTTP request containing the following JSON payload[^1]:
+Fortunately, the middleware is sophisticated enough that we don't even need tell it which of the two kinds of dictionaries to expect. Whether the dictionary is passed as JSON payload or in `urlencoded` format, it will deserialize it into an instance of a type, so long as we define that type correctly.  
 
-[^1]: "A HTTP request containing a JSON payload `json`" = "A HTTP request with `Content-Type` = `application/json` and a JSON-formatted string `json` provided as the request body"
+For an example, suppose that the POST /api/resource endpoint receives an HTTP request of `Content-Type` = `application/json`, which contains the following JSON payload:
 
   ```json
 {
@@ -154,7 +141,9 @@ To represent JSON input in particular, it's most common to use a complex type. F
 }
   ```
 
-To properly receive this JSON payload as an input, we need to define a type that mimics its schema, like so:
+To properly receive the payload as an input, we need to define a type that mimics its schema, like so[^4]:
+
+[^4]: One strange "gotcha" is that you have to define properties (like `public int a { get; set; }`) instead of fields (like `public int a;`) if you want to have things work as they should.
 
   ```c#
 public record OuterType
@@ -172,33 +161,47 @@ public record InnerType
 }
   ```
 
-(One strange "gotcha" is that you have to define properties (like `public int a { get; set; }`) instead of fields (like `public int a;`)! Otherwise, the type will not be properly interpreted by the middleware.
+(Notice that *nesting* in the JSON schema corresponds to *composition* of complex types in the type representation of the schema.)
 
-Also, notice that *nesting* in the JSON schema corresponds to *composition* of complex types in the type representation of the schema.)
-
-Now that we can represent the JSON payload input, we can define a  `[HttpPost]` action method that receives it:
+Now that we can represent the JSON payload input, we can define a  `[HttpGet]` action method that receives it:
 
 ```c#
 [HttpPost("resource")]
-public async Task<ActionResult<OuterWrapper>> Post(Outer input)
+public async Task<ActionResult> Post(OuterType input)
 {
-    return await clientsService.GetResult();
+    return await service.Create(input);
 }
 ```
 
 The middleware will take care of parsing the JSON payload provided by an API caller, so that, at the beginning of `Post()`, action method, the properties of that `OuterType` variable are populated as you would expect. 
 
+### Representing scalar inputs
+
+Scalar inputs (strings, numbers, or booleans) can only ever be specified as route parameters or query parameters.
+
+To represent a scalar input, simply use a primitive type like `string`, `int`, `double`, or `bool`. An example of an action method corresponding to a POST endpoint that accepts a `string` input is
+
+```c#
+[HttpPost("info")]
+public async Task<ActionResult> Post(string input)
+{
+    return await service.Create(input);
+}
+```
+
+(Don't worry about the return type too much for now. Just know that  `ActionResult` is the typical return type for action methods that return no output other than a success message or error message.)
+
 ### General typing
 
-While it is most common- and probably best practice- to represent JSON inputs as complex types, there are some more general ways to do so worth mentioning. 
+While it is most common- and probably best practice- to represent scalar and JSON inputs in the standard ways mentioned above, there are some more general ways to do so worth mentioning. 
 
 The *most* general way to represent a JSON input is to use `Dictionary<string, System.Text.JsonElement>`.
 
-Scalars can also be represented in a more general way. Since scalars can be interpreted as constituting valid JSON payloads, they can be represented as `JsonElement`. 
+Since scalars can be interpreted as constituting valid JSON payloads, they can also be represented in a more general way, as a `JsonElement`. 
 
 Here are the full details:
 
-| Kind of input or output to API endpoint            | Types that can represent it                                  |
+| Kind of input or output to API endpoint            | C# types that can represent it                               |
 | -------------------------------------------------- | ------------------------------------------------------------ |
 | Raw scalar value                                   | - `JsonElement` <br />- A primitive type (`int`, `float`, `string`, `bool`, etc.) |
 | JSON list of scalar values                         | - A weakly derived type of `ICollection<JsonElement>` <br />- A weakly derived type of `ICollection<Entity>`, in the special case when the elements of the array are all representable by type `Entity`<br />- A type (`record`, `class`, or `struct`) wrapping any of the above |
@@ -208,9 +211,15 @@ Here are the full details:
 
 ## Responses
 
-Types that represent responses are handled by the middleware in the same way as types that represent requests, with only a couple of caveats:
+Similarly to as was the case with requests, the kind of the output that will be be passed in the HTTP response sent by an API endpoint corresponds to the type of the output of the corresponding controller action method.
 
-- Response types are return types instead of input types
-- It is preferable to return types of the form `ActionResult<T>` (or `Task<ActionResult<T>>` for `async` action methods), since common API server responses like `NotFound()` and `BadRequest()` are of type `ActionResult`
-  - If `T` is not primitive, type erasure is used: the middleware converts `ActionResult<T>` to `ActionResult`
+Types that represent outputs of responses are essentially[^5] handled by the middleware in the same way as types that represent inputs for requests, with only one main caveat: while it is *possible* to simply return the type `T` representing the output (or `Task<T>` if the method is `async`), it is *preferable* to return `ActionResult<T>` (or `Task<ActionResult<T>>`), since common API server responses like `NotFound()` and `BadRequest()` are of type `ActionResult`.
+
+[^5]: Only essentially. Inputs to requests are handled by the "model binding" step of the middleware, while outputs of responses are handled by the "output formatting" step of the middleware.
+
+## `[ApiController]`
+
+Controllers in ASP.NET Core Web API (classes that inherit from `ControllerBase`) have basic functionality for building API controllers, like automatic model binding.
+
+When a controller is additionally annotated with `[ApiController]`, its methods now *must* be annotated with a HTTP verb attribute (like `[HttpGet]` or `[HttpPost]`).
 
