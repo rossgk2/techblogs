@@ -30,11 +30,11 @@ In modern ASP.NET, there is a single framework- ASP.NET Core, or "Core". The dif
 
 - Uses UI-focused features (Tag Helpers, Layouts, Razor syntax)
 
-Confusingly, "ASP.NET Core Web API" and "ASP.NET Core Web App" both depend heavily on Microsoft.AspNetCore.Mvc, which is can be misinterpreted as being evocative of the legacy framework "ASP.NET MVC".
+Confusingly, "ASP.NET Core Web API" and "ASP.NET Core Web App" both depend heavily on Microsoft.AspNetCore.Mvc, which can be misinterpreted as being evocative of the legacy framework "ASP.NET MVC".
 
 ## Controllers and action methods
 
-In ASP.NET Core Web API, groupings of related API endpoints corresponds to a *controller class*- a class inheriting from `ControllerBase`- that defines how HTTP requests to those API endpoints are to be handled. Make sure not to confuse `ControllerBase` with the closely-related `Controller` class, which adds view support and is most commonly in ASP.NET Core Web App.
+In ASP.NET Core Web API, groupings of related API endpoints correspond to a *controller class*- a class inheriting from `ControllerBase`- that defines how HTTP requests to those API endpoints are to be handled. Make sure not to confuse `ControllerBase` with the closely-related `Controller` class, which adds view support and is most commonly in ASP.NET Core Web App.
 
 Specifically, handlers for the different verbs (GET, PUT, POST, DELETE, PATCH) that can be issued to that API endpoint are defined as methods of the controller class. Such methods are called *action methods*.
 
@@ -45,15 +45,13 @@ We describe how a HTTP request sent to an API endpoint is matched to a controlle
 
 ### Conventional routing
 
-In the olden days, before the `[Route]` attribute existed, the following *global* configuration code associating URLs with controller actions was placed in `Program.cs`, the entry-point file:
+In the olden days, before the `[Route]` attribute became the dominant pattern, the following *global* configuration code associating URLs with controller actions was placed in `Program.cs`, the entry-point file:
 
 ```c#
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-        name: "default",
-        pattern: "{controller}/{action}/{id?}");
-});
+app.MapControllerRoute(
+	name: "default",
+    pattern: "{controller}/{action}/{id?}");
+);
 ```
 
 This code causes a URL such as "/resource/info" to be handled by the action method named `Info` in the controller called `ResourceController`:
@@ -73,21 +71,24 @@ public class ResourceController : ControllerBase
 Though, the first above block would actually typically include some defaults, so that the URL "/" is handled by the action called `Index` in the controller called `HomeController`, and would look like this:
 
 ```c#
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
-});
+app.MapControllerRoute(
+	name: "default",
+    pattern: "{controller=home}/{action=index}/{id?}");
+);
 ```
 
 ### Attribute-based routing
 
 #### 1. Determining the controller
 
-Modern code uses C#'s decorator syntax- attributes- to decentralize the configuration code.
+Modern code uses C#'s decorator syntax- attributes- to decentralize the configuration code. To enable the use of attributes, place the following in `Program.cs`:
 
-The association of URLs with controllers no longer happens all in one place; instead, it is done on a per-controller, by annotating the controller with the `[Route]` attribute:
+```
+builder.Services.AddControllers();
+app.MapControllers();
+```
+
+With this, the association of URLs with controllers no longer happens all in one place; instead, it is done on a per-controller basis, by annotating the controller with the `[Route]` attribute:
 
 ```c#
 [Route("[controller]")]
@@ -124,7 +125,7 @@ In general, a HTTP request is matched to an action with the following algorithm:
 
 ## Requests
 
-As one would expect, the kinds of the inputs can be passed in a HTTP request that's sent to an API endpoint correspond to the types of the inputs in the corresponding controller action method. Here we describe exactly how to define those types.
+As one would expect, the kinds of inputs can be passed in a HTTP request that's sent to an API endpoint correspond to the types of the inputs in the corresponding controller action method. Here we describe exactly how to define those types.
 
 ### Representing dictionary inputs
 
@@ -191,7 +192,7 @@ In general, for any type `T`, having an input of `[FromBody] T tInstance` to an 
 
 There is little work to do when figuring out what type to use to represent a scalar. Even as there are a couple ways for scalars to be passed by API callers, a primitive type (`string`, `int`, `double`, `decimal`, `bool`) is always used for the representation.
 
-However, since- unlike with dictionary inputs- there are multiple places a scalar input could be placed in an incoming HTTP request, it is mandatory to label each input that is to receive a scalar value with an attribute that specifies the scalar's location. 
+However, since- unlike with dictionary inputs- there are multiple places a scalar input could be placed in an incoming HTTP request, it's usually best practice to label each input that is to receive a scalar value with an attribute that specifies the scalar's location, as it can be hard to achieve the desired parsing behavior otherwise.
 
 | Location of the scalar in the incoming HTTP request | Attribute     |
 | --------------------------------------------------- | ------------- |
@@ -199,7 +200,7 @@ However, since- unlike with dictionary inputs- there are multiple places a scala
 | In the URL route[^6]                                | `[FromRoute]` |
 | In the URL query parameters[^7]                     | `[FromQuery]` |
 
-[^5]:  `3` is a valid JSON. `"hi`" is also a valid JSON.
+[^5]:  `3` is a valid JSON. `"hi"` is also a valid JSON.
 
 [^6]: E.g. a HTTP request sent to /resources/3
 [^7]: E.g. a HTTP request sent to resources?value=3
@@ -207,14 +208,14 @@ However, since- unlike with dictionary inputs- there are multiple places a scala
 For example, consider the following action method:
 
 ```c#
-[HttpPost("info/{id}")]
-public async Task<ActionResult> Post([FromRoute] string input)
+[HttpPost("info/{input1}")]
+public async Task<ActionResult> Post([FromRoute] int input1, [FromQuery] string input2)
 {
-    return await service.Create(input);
+    return await service.Create(input1, input2);
 }
 ```
 
-This action method would be invoked if API caller sent a HTTP POST request to /resource/info/3; At the beginning of the invocation, the value of `input` would be `3`.
+This action method would be invoked if API caller sent a HTTP POST request to /resource/info/3?input2=hi; At the beginning of the invocation, the value of `input1` would be `3` and the value of `input2` would be `"hi"`.
 
 ### General typing for dictionaries
 
@@ -234,7 +235,7 @@ Here are the full details:
 
 ## Responses
 
-Similarly to as was the case with requests, the kind of the output that will be be passed in the HTTP response sent by an API endpoint corresponds to the type of the output of the corresponding controller action method.
+Similarly to as was the case with requests, the kind of the output that will be passed in the HTTP response sent by an API endpoint corresponds to the type of the output of the corresponding controller action method.
 
 Types that represent outputs of responses are essentially[^8] handled by the middleware in the same way as types that represent inputs for requests, with only one main caveat: while it is *possible* to simply return the type `T` representing the output (or `Task<T>` if the method is `async`), it is *preferable* to return `ActionResult<T>` (or `Task<ActionResult<T>>`), since common API server responses like `NotFound()` and `BadRequest()` are of type `ActionResult`.
 
@@ -245,6 +246,6 @@ Types that represent outputs of responses are essentially[^8] handled by the mid
 Controllers in ASP.NET Core Web API (classes that inherit from `ControllerBase`) have basic functionality for building API controllers, like:
 
 * "Automatic model binding" - there is no need to explicitly use `[FromBody]` when representing dictionaries[^9]; it is always inferred by the middleware
-* "Automatic model validation" -  controller action methods return an `ActionResult` representing a 400 error when a request with incompatible inputs is received
+* "Automatic model validation" -  the middleware returns an `ActionResult` representing a 400 error when a request with incompatible inputs is received
 
-Also, when `[ApiController]` is used, attribute routing is required and conventional routing is disallowed.
+Also, when `[ApiController]` is used, attribute routing is required.
