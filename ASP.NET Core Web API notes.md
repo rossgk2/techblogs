@@ -34,9 +34,9 @@ Confusingly, "ASP.NET Core Web API" and "ASP.NET Core Web App" both depend heavi
 
 ## Controllers and action methods
 
-In ASP.NET Core Web API, groupings of related API endpoints correspond to a *controller class*- a class inheriting from `ControllerBase`- that defines how HTTP requests to those API endpoints are to be handled. Make sure not to confuse `ControllerBase` with the closely-related `Controller` class, which adds view support and is most commonly in ASP.NET Core Web App.
+In ASP.NET Core Web API, groupings of related API endpoints correspond to a *controller class*- a class inheriting from `ControllerBase`- that defines how HTTP requests to those API endpoints are to be handled. (Be aware, there does exist a closely-related `Controller` class, easy to conflate with `ControllerBase`, which adds view support and is used most commonly in ASP.NET Core Web App.)
 
-Specifically, handlers for the different verbs (GET, PUT, POST, DELETE, PATCH) that can be issued to that API endpoint are defined as methods of the controller class. Such methods are called *action methods*.
+Specifically, handlers for the different HTTP verbs (GET, PUT, POST, DELETE, PATCH) that can be issued to that API endpoint are defined as methods of the controller class. Such methods are called *action methods*.
 
 We describe how a HTTP request sent to an API endpoint is matched to a controller action. There are two steps to this process:
 
